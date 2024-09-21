@@ -1,0 +1,14 @@
+
+.ingredients {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: stretch;
+    max-height: 65vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.tab {
+    display: flex;
+}

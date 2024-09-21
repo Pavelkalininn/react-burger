@@ -1,0 +1,27 @@
+
+.card {
+    flex-wrap: wrap;
+    text-align: center;
+    justify-items: center;
+    max-width: 15vw;
+    padding-left: 16px;
+    padding-right: 24px;
+}
+
+.text {
+  flex-wrap: wrap;
+  padding: 4px;
+}
+
+.image {
+  padding-left: 16px;
+  padding-top: 24px;
+  padding-bottom: 4px;
+  position: relative;
+}
+
+.price {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

@@ -1,0 +1,29 @@
+
+.constructor {
+  max-height: 60vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: 'flex';
+  flex-direction: 'column';
+  gap: '10px';
+}
+
+.bottomMenu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 40px;
+}
+
+.icon {
+  padding-left: 20px;
+  padding-right: 40px;
+}
+
+.element {
+  padding-bottom: 16px;
+}
+
+.hidden {
+  visibility: hidden;
+}
