@@ -14,6 +14,13 @@
     flex: 1;
     justify-content: center
 }
+.href {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    color: white;
+
+}
 
 .icon {
     padding-right: 8px;

@@ -8,19 +8,18 @@ export default function BurgerConstructor ({ ingredients }) {
 	return <>
 	  <div className={constructorStyles.constructor}>
 			{
-				ingredients.map((constructorElementData, constructorElementId) => {
-					return  <div key={constructorElementId} className={constructorStyles.element}>
-						
-  						<DragIcon className={constructorElementId !== 0 && constructorElementId !== ingredients.length - 1 ? "" : constructorStyles.hidden} type="primary" />
+				ingredients.map((constructorElementData, constructorElementId) => (
+					<div key={constructorElementId} className={constructorStyles.element}>
+						<DragIcon className={constructorElementId !== 0 && constructorElementId !== ingredients.length - 1 ? "" : constructorStyles.hidden} type="primary" />
 						<ConstructorElement
-						type={(constructorElementId === 0 && 'top') || (constructorElementId === ingredients.length - 1 && 'bottom')}
-						isLocked={constructorElementId === 0 || constructorElementId === ingredients.length - 1}
-						text={constructorElementData.name}
-						price={constructorElementData.price}
-						thumbnail={constructorElementData.image}
+							type={(constructorElementId === 0 && 'top') || (constructorElementId === ingredients.length - 1 && 'bottom')}
+							isLocked={constructorElementId === 0 || constructorElementId === ingredients.length - 1}
+							text={constructorElementData.name}
+							price={constructorElementData.price}
+							thumbnail={constructorElementData.image}
 					/>
 				</div>
-				})
+				))
 			}
     </div>
 		<p className={cn('text text_type_digits-default', constructorStyles.bottomMenu)}>666<CurrencyIcon className={constructorStyles.icon} type="primary" />
