@@ -19,8 +19,8 @@ function App() {
     <>
       <AppHeader />
       <main className='main'>
-        <BurgerIngredientsSide  ingredients={ingredients} />
-        <BurgerConstructorSide  ingredients={ingredients} />
+        <BurgerIngredientsSide ingredients={ingredients} />
+        <BurgerConstructorSide ingredients={ingredients} />
       </main>
     </>
   );

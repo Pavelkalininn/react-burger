@@ -1,0 +1,30 @@
+.modal {
+  position: fixed;
+  overflow: #000000;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  z-index: 40;
+}
+
+ 
+.modalBody {
+  position: relative;
+  border-radius: 30px;
+  max-width: 70vw;
+  min-width: 30vw;
+  margin: 0 auto;
+  max-height: 70vh;
+  min-height: 50vh;
+  margin-top: calc(100vh - 85vh - 20px);
+  opacity: 60;
+  background: #000000;
+  padding: 20px;
+  overflow: auto;
+}

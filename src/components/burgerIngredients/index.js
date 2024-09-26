@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { ingredientPropTypes } from "../../utils/propTypes";
 import cn from 'classnames'
 
+
 export default function BurgerIngredients ({ ingredients }) {
     const ingredientTypes = {'bun': 'Булки', "sauce": 'Соусы', 'main': 'Начинки'}
     const [current, setCurrent] = useState(Object.keys(ingredientTypes)[0])

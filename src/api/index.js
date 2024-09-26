@@ -14,13 +14,13 @@ class Api {
       })
     }
     async getIngredients () {
-        return fetch(
-          `${this._url}/api/ingredients`,
-          {
-            method: 'GET',
-            headers: this._headers,
-          }
-        ).then(this.checkResponse)
-      }
+      return fetch(
+        `${this._url}/api/ingredients`,
+        {
+          method: 'GET',
+          headers: this._headers,
+        }
+      ).then(this.checkResponse)
+    }
 }
 export default new Api(process.env.API_URL || 'https://norma.nomoreparties.space', { 'content-type': 'application/json' })
