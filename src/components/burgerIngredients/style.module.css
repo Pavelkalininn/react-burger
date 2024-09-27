@@ -1,12 +1,14 @@
 
-.ingredients {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    align-content: stretch;
+.ingredientsBox {
     max-height: 65vh;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.ingredients {
+    
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .tab {
