@@ -27,3 +27,12 @@
 .hidden {
   visibility: hidden;
 }
+
+
+.identity {
+  padding: 32px 0 60px 0;
+}
+
+.wait {
+  padding: 8px 0 120px 0;
+}

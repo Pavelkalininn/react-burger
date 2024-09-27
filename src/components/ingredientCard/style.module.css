@@ -1,11 +1,11 @@
 
 .card {
-    flex-wrap: wrap;
-    text-align: center;
-    justify-items: center;
-    max-width: 15vw;
-    padding-left: 16px;
-    padding-right: 24px;
+  flex-wrap: wrap;
+  text-align: center;
+  justify-items: center;
+  max-width: 15vw;
+  padding-left: 16px;
+  padding-right: 24px;
 }
 
 .text {
@@ -22,9 +22,9 @@
 }
 
 .price {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 .structure {
   display: flex;
@@ -36,13 +36,7 @@
 
 .structureComponents {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding-right: 20px;
   text-align: center;
-}
-
-.modal {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
 }

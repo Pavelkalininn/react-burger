@@ -7,17 +7,17 @@ import cn from "classnames";
 export default function IngredientCard({ ingredient }) {
     const [ showModal, setShowModal ] = useState(false)
     const modal = (
-      <Modal header="Детали ингредиента" onClose={() => setShowModal(!showModal)}> 
-	  <div className={ingredientCardStyles.modal}>
-          <img className={ingredientCardStyles.image} src={ingredient.image_large} alt={ingredient.name} />
-		  <p className={cn("text text_type_main-large", ingredientCardStyles.text)}>{ingredient.name}</p>
-		  <ul className={ingredientCardStyles.structure}>
-			<li className={cn("text text_type_main-default", ingredientCardStyles.structureComponents)}>Калории, ккал <br></br>{ingredient.calories}</li>
-			<li className={cn("text text_type_main-default", ingredientCardStyles.structureComponents)}>Белки г. <br></br>{ingredient.proteins}</li>
-			<li className={cn("text text_type_main-default", ingredientCardStyles.structureComponents)}>Жиры г. <br></br>{ingredient.fat}</li>
-			<li className={cn("text text_type_main-default", ingredientCardStyles.structureComponents)}>Углеводы г. <br></br>{ingredient.carbohydrates}</li>
-		  </ul>
-		</div>
+      <Modal header="Детали ингредиента" onClose={() => setShowModal(!showModal)}>
+				<>
+				<img className={ingredientCardStyles.image} src={ingredient.image_large} alt={ingredient.name} />
+				<p className={cn("text text_type_main-large", ingredientCardStyles.text)}>{ingredient.name}</p>
+				<ul className={cn(ingredientCardStyles.structure, "text text_type_main-default")}>
+					<li className={ingredientCardStyles.structureComponents}><p>Калории, ккал</p>{ingredient.calories}</li>
+					<li className={ingredientCardStyles.structureComponents}><p>Белки г.</p>{ingredient.proteins}</li>
+					<li className={ingredientCardStyles.structureComponents}><p>Жиры г.</p>{ingredient.fat}</li>
+					<li className={ingredientCardStyles.structureComponents}><p>Углеводы г.</p>{ingredient.carbohydrates}</li>
+				</ul>
+				</>
       </Modal>
     );
 	return <div className={ingredientCardStyles.card} onClick={() => setShowModal(!showModal)}>

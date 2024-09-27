@@ -1,20 +1,15 @@
-.text {
-  padding: 40px 40px 0px 40px;
-}
+
 .header {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
+  padding: 40px 40px 0px 40px;
 }
 
 .left {
-  flex: 2;
+  flex: 4;
 }
 
 .right {
   flex: 0.2;
-  align-items: center;
-  justify-content: center;
-  justify-items: center;
-
 }

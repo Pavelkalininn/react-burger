@@ -5,14 +5,18 @@ import PropTypes from 'prop-types';
 import { ingredientPropTypes } from "../../utils/propTypes";
 import Modal from "../modal";
 import { useState } from "react";
+import tickImage from '../../images/tick.svg'
 
 export default function BurgerConstructor ({ ingredients }) {
 	const [ showOrder, setShowOrder ] = useState(false)
     const modal = (
-      <Modal onClose={() => setShowOrder(!showOrder)}> 
+      <Modal onClose={() => setShowOrder(!showOrder)} > 
 	  <div>
-		  <p className={cn("text text_type_main-large")}>034536</p>
-		  Bltynbabrfnjh pfrfpf
+		  <p className={cn("text text_type_digits-large")}>034536</p>
+		  <p className={cn(constructorStyles.identity)}> идентификатор заказа</p>
+		  <img className={constructorStyles.image} src={tickImage} alt={'tick'} />
+		  <p className={cn(constructorStyles.cookStart)}> Ваш заказ начали готовить</p>
+		  <p className={cn(constructorStyles.wait)}> Дождитесь готовности на орбитальной станции</p>
 		</div>
       </Modal>
     );
