@@ -29,11 +29,11 @@ export default function BurgerConstructor({ ingredients }) {
   return (
     <>
       <div className={constructorStyles.constructor}>
-        {ingredients.map((constructorElementData, constructorElementId) => (
-          <div key={constructorElementId} className={constructorStyles.element}>
+        {ingredients.map((item, i) => (
+          <div key={i} className={constructorStyles.element}>
             <DragIcon
               className={
-                constructorElementId !== 0 && constructorElementId !== ingredients.length - 1
+                i !== 0 && i !== ingredients.length - 1
                   ? ''
                   : constructorStyles.hidden
               }
@@ -41,15 +41,15 @@ export default function BurgerConstructor({ ingredients }) {
             />
             <ConstructorElement
               type={
-                (constructorElementId === 0 && 'top') ||
-                (constructorElementId === ingredients.length - 1 && 'bottom')
+                (i === 0 && 'top') ||
+                (i === ingredients.length - 1 && 'bottom')
               }
               isLocked={
-                constructorElementId === 0 || constructorElementId === ingredients.length - 1
+                i === 0 || i === ingredients.length - 1
               }
-              text={constructorElementData.name}
-              price={constructorElementData.price}
-              thumbnail={constructorElementData.image}
+              text={item.name}
+              price={item.price}
+              thumbnail={item.image}
             />
           </div>
         ))}
