@@ -1,0 +1,22 @@
+
+.ingredientsBox {
+    max-height: 65vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.ingredients {
+    
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.tab {
+    display: flex;
+}
+
+.title {
+    padding-top: 40px;
+    width: 100%;
+    padding-bottom: 24px;
+}

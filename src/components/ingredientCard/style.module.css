@@ -1,0 +1,42 @@
+
+.card {
+  flex-wrap: wrap;
+  text-align: center;
+  justify-items: center;
+  max-width: 15vw;
+  padding-left: 16px;
+  padding-right: 24px;
+}
+
+.text {
+  flex-wrap: wrap;
+  padding: 4px;
+  text-align: center;
+}
+
+.image {
+  padding-left: 16px;
+  padding-top: 24px;
+  padding-bottom: 4px;
+  position: relative;
+}
+
+.price {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.structure {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 32px;
+  padding-bottom: 60px;
+}
+
+.structureComponents {
+  display: flex;
+  flex-direction: column;
+  padding-right: 20px;
+  text-align: center;
+}
