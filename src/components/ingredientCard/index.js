@@ -1,13 +1,33 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientCardStyles from './style.module.css';
 import Modal from '../modal';
-import { useState } from 'react';
 import cn from 'classnames';
+import { useDispatch } from 'react-redux';
+import {
+  chooseIngredient,
+  dropIngredient,
+} from '../../services/slices/currentIngredient';
+import { useState } from 'react';
+import { useDrag } from 'react-dnd';
+
+
 
 export default function IngredientCard({ ingredient }) {
   const [showModal, setShowModal] = useState(false);
+  const [{ isDrag }, drag] = useDrag({
+    type: "animal",
+    item: ingredient ,
+    collect: monitor => ({
+      isDrag: monitor.isDragging()
+    })
+  });
+
+  const dispatch = useDispatch()
   const modal = (
-    <Modal header="Детали ингредиента" onClose={() => setShowModal(!showModal)}>
+    <Modal header="Детали ингредиента" onClose={() => {
+      setShowModal(!showModal);
+      dispatch(dropIngredient())
+    }}>
       <>
         <img
           className={ingredientCardStyles.image}
@@ -39,7 +59,8 @@ export default function IngredientCard({ ingredient }) {
     </Modal>
   );
   return (
-    <div className={ingredientCardStyles.card} onClick={() => setShowModal(!showModal)}>
+    <div ref={drag} className={ingredientCardStyles.card} onClick={
+      () => {setShowModal(!showModal); dispatch(chooseIngredient(ingredient))}}>
       <div className={ingredientCardStyles.image}>
         <img src={ingredient.image} alt={ingredient.name} />
         <Counter count={1} size="default" extraClass="m-1" />

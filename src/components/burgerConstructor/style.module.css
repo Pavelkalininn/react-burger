@@ -3,9 +3,10 @@
   max-height: 60vh;
   overflow-y: auto;
   overflow-x: hidden;
-  display: 'flex';
-  flex-direction: 'column';
-  gap: '10px';
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 50vh;
 }
 
 .bottomMenu {
