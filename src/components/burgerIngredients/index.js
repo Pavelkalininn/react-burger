@@ -1,12 +1,55 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import IngredientCard from '../ingredientCard';
 import ingredientsStyles from './style.module.css';
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import Modal from '../modal';
+import { dropIngredient } from '../../services/slices/currentIngredient';
 
 export default function BurgerIngredients() {
   const { ingredients } = useSelector((state) => state.ingredientsSlice);
+  const dispatch = useDispatch();
+  const currentIngredient = useSelector((state) => state.currentIngredientSlice);
+  const modal = currentIngredient && (
+    <Modal
+      header="Детали ингредиента"
+      onClose={() => {
+        dispatch(dropIngredient());
+      }}
+    >
+      <>
+        <img
+          className={ingredientsStyles.image}
+          src={currentIngredient.image_large}
+          alt={currentIngredient.name}
+        />
+        <p className={cn('text text_type_main-large', ingredientsStyles.text)}>
+          {currentIngredient.name}
+        </p>
+        <ul className={cn(ingredientsStyles.structure, 'text text_type_main-default')}>
+          <li className={ingredientsStyles.structureComponents}>
+            <p>Калории, ккал</p>
+            {currentIngredient.calories}
+          </li>
+          <li className={ingredientsStyles.structureComponents}>
+            <p>Белки г.</p>
+            {currentIngredient.proteins}
+          </li>
+          <li className={ingredientsStyles.structureComponents}>
+            <p>Жиры г.</p>
+            {currentIngredient.fat}
+          </li>
+          <li className={ingredientsStyles.structureComponents}>
+            <p>Углеводы г.</p>
+            {currentIngredient.carbohydrates}
+          </li>
+        </ul>
+      </>
+    </Modal>
+  );
+
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
@@ -71,6 +114,7 @@ export default function BurgerIngredients() {
           </div>
         ))}
       </div>
+      {modal}
     </>
   );
 }

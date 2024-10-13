@@ -10,6 +10,7 @@
 
 .text {
   flex-wrap: wrap;
+  max-width: 30vw;
   padding: 4px;
   text-align: center;
 }

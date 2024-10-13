@@ -1,23 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { api_url } from '../const';
 import { checkResponse } from './utils';
-import { useSelector } from 'react-redux';
 
-export const fetchOrder = createAsyncThunk(
-  "order/fetchOrder",
-  async () => {
-    const orderIngredients = useSelector(state => state.burgerIngredientsSlice.burgerIngredients.map(ingredient => ingredient._id));
-    return  await fetch(`${api_url}/api/orders`, {
-      method: "POST",
-
-      body: JSON.stringify({ingredients: orderIngredients})
-    }).then(res => checkResponse(res));
-  },
-);
-
+export const fetchOrder = createAsyncThunk('order/fetchOrder', async (ingredients) => {
+  return await fetch(`${api_url}/api/orders`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ ingredients: ingredients }),
+  }).then((res) => checkResponse(res));
+});
 
 const orderNumberSlice = createSlice({
-  name: "orderNumber",
+  name: 'orderNumber',
   initialState: {
     number: null,
     isLoading: false,
@@ -27,7 +21,16 @@ const orderNumberSlice = createSlice({
     error: '',
   },
   reducers: {
-    removeOrder: (state, action) => state.initialState
+    removeOrder: (state, action) => {
+      return {
+        number: null,
+        isLoading: false,
+        isFetched: false,
+        isSuccess: false,
+        isError: false,
+        error: '',
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -43,9 +46,9 @@ const orderNumberSlice = createSlice({
       .addCase(fetchOrder.rejected, (state, action) => {
         state.isError = true;
         state.error = action.error.message;
-      })
-  }
+      });
+  },
 });
 
-export const { removeOrder } = orderNumberSlice.actions
+export const { removeOrder } = orderNumberSlice.actions;
 export default orderNumberSlice.reducer;

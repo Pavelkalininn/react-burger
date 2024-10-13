@@ -1,34 +1,41 @@
 import {
   Button,
-  ConstructorElement,
   CurrencyIcon,
-  DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import constructorStyles from './style.module.css';
 import cn from 'classnames';
 import Modal from '../modal';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import tickImage from '../../images/tick.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchOrder, removeOrder } from '../../services/slices/order';
 import { useDrop } from 'react-dnd';
 import {
-  addIngredientToBurger
+  addBunToBurger,
+  addIngredientToBurger,
 } from '../../services/slices/burgerIngredients';
+import { BurgerConstructorIngredient } from '../burgerConstructorIngredient';
 
 export default function BurgerConstructor() {
   const burgerIngredients = useSelector((state) => state.burgerIngredientsSlice);
-  const { number, isSuccess } = useSelector((state) => state.orderNumberSlice);
-  const [{ isHover } , drop] = useDrop({
-    accept: "animal",
+  const {
+    number,
+    isError,
+    error,
+
+  } = useSelector((state) => state.orderNumberSlice);
+ 
+  const [, drop] = useDrop({
+    accept: "new",
     collect: monitor => ({
       isHover: monitor.isOver(),
     }),
-    drop(item) {
-      dispatch(addIngredientToBurger(item));
+    drop(item, monitor) {
+      if (item.type === 'bun') return dispatch(addBunToBurger({ingredient: item}))
+      dispatch(addIngredientToBurger({ingredient: item, id: -1}));
     },
   });
-  console.log(burgerIngredients);
+  
 
   const dispatch = useDispatch();
   const orderSum = useMemo(
@@ -36,16 +43,14 @@ export default function BurgerConstructor() {
       (result, ingredient) => result + ingredient.price, 0),
     [burgerIngredients]
   )
-  const [showOrder, setShowOrder] = useState(false);
   const modal = (
     <Modal
       onClose={() => {
-        setShowOrder(!showOrder);
         dispatch(removeOrder());
       }}
     >
       <div>
-        <p className={cn('text text_type_digits-large')}>{isSuccess && number}</p>
+        <p className={cn('text text_type_digits-large')}>{ number}</p>
         <p className={cn(constructorStyles.identity)}> идентификатор заказа</p>
         <img className={constructorStyles.image} src={tickImage} alt={'tick'} />
         <p className={cn(constructorStyles.cookStart)}> Ваш заказ начали готовить</p>
@@ -58,31 +63,17 @@ export default function BurgerConstructor() {
     <>
       <div ref={drop} className={constructorStyles.constructor}>
         {burgerIngredients.map((item, i) => (
-          <div key={i} className={constructorStyles.element}>
-            <DragIcon
-              className={
-                i !== 0 && i !== burgerIngredients.length - 1 ? '' : constructorStyles.hidden
-              }
-              type="primary"
-            />
-            <ConstructorElement
-              type={(i === 0 && 'top') || (i === burgerIngredients.length - 1 && 'bottom')}
-              isLocked={i === 0 || i === burgerIngredients.length - 1}
-              text={item.name}
-              price={item.price}
-              thumbnail={item.image}
-            />
-          </div>
+         <BurgerConstructorIngredient key={i} pk={i} item={item} />
         ))}
       </div>
       <p className={cn('text text_type_digits-default', constructorStyles.bottomMenu)}>
         {orderSum}
         <CurrencyIcon className={constructorStyles.icon} type="primary" />
+        {isError && error}
         <Button
           htmlType="button"
           onClick={() => {
-            setShowOrder(!showOrder);
-            dispatch(fetchOrder())
+            dispatch(fetchOrder(burgerIngredients.map(ingredient => ingredient._id)))
           }}
           type="primary"
           size="medium"
@@ -90,7 +81,7 @@ export default function BurgerConstructor() {
           Оформить заказ
         </Button>
       </p>
-      {showOrder && modal}
+      {number && modal}
     </>
   );
 }

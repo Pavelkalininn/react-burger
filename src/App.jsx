@@ -11,7 +11,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchIngredients())
+    dispatch(fetchIngredients());
   }, [dispatch]);
 
   return (

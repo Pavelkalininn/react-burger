@@ -2,20 +2,15 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { api_url } from '../const';
 import { checkResponse } from './utils';
 
-
-export const fetchIngredients = createAsyncThunk(
-  "ingredients/fetchIngredients",
-  async () => {
-    return  await fetch(`${api_url}/api/ingredients`, {
-      method: "GET",
-      headers: { 'content-type': 'application/json' }
-    }).then(res => checkResponse(res));
-  },
-);
-
+export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async () => {
+  return await fetch(`${api_url}/api/ingredients`, {
+    method: 'GET',
+    headers: { 'content-type': 'application/json' },
+  }).then((res) => checkResponse(res));
+});
 
 const ingredientsSlice = createSlice({
-  name: "ingredients",
+  name: 'ingredients',
   initialState: {
     ingredients: [],
     isLoading: false,
@@ -37,8 +32,8 @@ const ingredientsSlice = createSlice({
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.isError = true;
         state.error = action.error.message;
-      })
-  }
+      });
+  },
 });
 
 export default ingredientsSlice.reducer;
