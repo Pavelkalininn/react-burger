@@ -10,6 +10,7 @@ export const fetchOrder = createAsyncThunk('order/fetchOrder', async (ingredient
   }).then((res) => checkResponse(res));
 });
 
+
 const orderNumberSlice = createSlice({
   name: 'orderNumber',
   initialState: {

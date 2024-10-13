@@ -6,8 +6,8 @@ import { useDrag } from 'react-dnd';
 
 export default function IngredientCard({ ingredient }) {
   const dispatch = useDispatch();
-  const burgerIngredients = useSelector((state) => state.burgerIngredientsSlice);
-  const ingredientCount = burgerIngredients.filter(burgerIngredient => burgerIngredient._id === ingredient._id).length
+  const {ingredients, bun} = useSelector((state) => state.burgerIngredientsSlice);
+  const ingredientCount = ingredients.filter(burgerIngredient => burgerIngredient?._id === ingredient?._id).length
   const [, drag] = useDrag({
     type: 'new',
     item: ingredient,

@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { dropIngredientFromBurger, moveIngredient } from '../../services/slices/burgerIngredients';
 
-export function BurgerConstructorIngredient({ pk, item }) {
+export function BurgerConstructorIngredient({ pk, item, type = null }) {
   const dispatch = useDispatch();
   const ref = useRef(null);
   const burgerIngredients = useSelector((state) => state.burgerIngredientsSlice);
+  const text = `${item.name} ${type === 'top' ? ' (Верх)' : ''}${type ==='bottom' ? ' (Низ)' : ''}`
 
   const [, drag] = useDrag({
     type: 'dragged',
@@ -23,7 +24,7 @@ export function BurgerConstructorIngredient({ pk, item }) {
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
-    drop(item, monitor) {
+    hover(item, monitor) {
       if (!ref.current) {
         return;
       }
@@ -51,13 +52,13 @@ export function BurgerConstructorIngredient({ pk, item }) {
   return (
     <div className={constructorStyles.element} ref={ref}>
       <DragIcon
-        className={pk !== 0 && pk !== burgerIngredients.length - 1 ? '' : constructorStyles.hidden}
+        className={type === 'top' || type === 'bottom' ? constructorStyles.hidden : ''}
         type="primary"
       />
       <ConstructorElement
-        type={(pk === 0 && 'top') || (pk === burgerIngredients.length - 1 && 'bottom')}
-        isLocked={pk === 0 || pk === burgerIngredients.length - 1}
-        text={item.name}
+        type={type}
+        isLocked={type === 'top' || type === 'bottom'}
+        text={text}
         price={item.price}
         thumbnail={item.image}
         handleClose={() => dispatch(dropIngredientFromBurger(pk))}

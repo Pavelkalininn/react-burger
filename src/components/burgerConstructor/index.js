@@ -17,7 +17,8 @@ import {
 import { BurgerConstructorIngredient } from '../burgerConstructorIngredient';
 
 export default function BurgerConstructor() {
-  const burgerIngredients = useSelector((state) => state.burgerIngredientsSlice);
+  const {ingredients, bun} = useSelector((state) => state.burgerIngredientsSlice);
+  console.log({ingredients})
   const {
     number,
     isError,
@@ -39,9 +40,9 @@ export default function BurgerConstructor() {
 
   const dispatch = useDispatch();
   const orderSum = useMemo(
-    () => burgerIngredients.reduce(
-      (result, ingredient) => result + ingredient.price, 0),
-    [burgerIngredients]
+    () => ingredients.reduce(
+      (result, ingredient) => result + ingredient?.price, 0) + bun?.price * 2,
+    [ingredients, bun]
   )
   const modal = (
     <Modal
@@ -61,10 +62,15 @@ export default function BurgerConstructor() {
 
   return (
     <>
-      <div ref={drop} className={constructorStyles.constructor}>
-        {burgerIngredients.map((item, i) => (
-         <BurgerConstructorIngredient key={i} pk={i} item={item} />
-        ))}
+      <div ref={drop}>
+        {bun && <BurgerConstructorIngredient type='top' item={bun} />}
+          <div className={constructorStyles.constructor}>
+            {ingredients.map((item, seqNum) => {
+              console.log({item})
+              return <BurgerConstructorIngredient key={item.uuid} item={item} pk={seqNum} />
+            })}
+          </div>
+        {bun && <BurgerConstructorIngredient  type='bottom' item={bun} />}
       </div>
       <p className={cn('text text_type_digits-default', constructorStyles.bottomMenu)}>
         {orderSum}
@@ -73,7 +79,7 @@ export default function BurgerConstructor() {
         <Button
           htmlType="button"
           onClick={() => {
-            dispatch(fetchOrder(burgerIngredients.map(ingredient => ingredient._id)))
+            dispatch(fetchOrder(ingredients.map(ingredient => ingredient._id)))
           }}
           type="primary"
           size="medium"
