@@ -1,15 +1,14 @@
-
 .modalBody {
   position: relative;
   border-radius: 30px;
   max-width: 70vw;
   min-width: 30vw;
   margin: 0 auto;
-  max-height: 75vh;
+  max-height: 80vh;
   min-height: 50vh;
   margin-top: calc(100vh - 85vh - 20px);
   opacity: 60;
-  background: #1C1C21;
+  background: #1c1c21;
   padding: 20px;
   overflow: auto;
 }
