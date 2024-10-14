@@ -5,34 +5,39 @@ const burgerIngredientsSlice = createSlice({
   name: 'burgerIngredients',
   initialState: {
     ingredients: [],
-    bun: null
+    bun: null,
   },
   reducers: {
     addIngredientToBurger: {
       reducer: (state, action) => {
-        return {bun: state.bun, ingredients: [...state.ingredients, action.payload.ingredient]}
+        return { bun: state.bun, ingredients: [...state.ingredients, action.payload.ingredient] };
       },
       prepare: (ingredient) => {
-        return { payload: { ingredient: {...ingredient.ingredient, uuid: uuid4() }}};
+        return { payload: { ingredient: { ...ingredient.ingredient, uuid: uuid4() } } };
       },
     },
-    dropIngredientFromBurger: (state, action) => {return {...state, ingredients: state.ingredients.filter(ingredient => ingredient.uuid !== action.payload)}},
-    
+    dropIngredientFromBurger: (state, action) => {
+      return {
+        ...state,
+        ingredients: state.ingredients.filter((ingredient) => ingredient.uuid !== action.payload),
+      };
+    },
+
     addBunToBurger: {
-      reducer: (state, action) => {return {...state, bun: action.payload.ingredient}},
+      reducer: (state, action) => {
+        return { ...state, bun: action.payload.ingredient };
+      },
     },
     moveIngredient: (state, action) => {
       if (action.payload.dragIndex) {
-        console.log(action.payload.dragIndex)
-        console.log(action.payload.hoverIndex)
-        const ingredient = state[action.payload.dragIndex];
+        const ingredient  = state.ingredients.splice(action.payload.dragIndex, 1)[0];
         state.ingredients.splice(action.payload.hoverIndex, 0, ingredient);
-        state.ingredients.splice(action.payload.dragIndex, 1);
       }
     },
-    removeIngredients: (state) => {return {ingredients: [], bun: null}},
+    removeIngredients: (state) => {
+      return { ingredients: [], bun: null };
+    },
   },
-  
 });
 
 export const {

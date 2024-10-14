@@ -9,7 +9,7 @@ export function BurgerConstructorIngredient({ pk, item, type = null }) {
   const dispatch = useDispatch();
   const ref = useRef(null);
   const burgerIngredients = useSelector((state) => state.burgerIngredientsSlice);
-  const text = `${item.name} ${type === 'top' ? ' (Верх)' : ''}${type ==='bottom' ? ' (Низ)' : ''}`
+  const text = `${item.name} ${type === 'top' ? ' (Верх)' : ''}${type === 'bottom' ? ' (Низ)' : ''}`;
 
   const [, drag] = useDrag({
     type: 'dragged',
@@ -44,6 +44,7 @@ export function BurgerConstructorIngredient({ pk, item, type = null }) {
         return;
       }
       dispatch(moveIngredient({ dragIndex, hoverIndex }));
+      item.id = hoverIndex;
     },
   });
 

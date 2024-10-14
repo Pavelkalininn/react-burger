@@ -1,27 +1,24 @@
-
 .ingredientsBox {
-    max-height: 65vh;
-    overflow-y: auto;
-    overflow-x: hidden;
+  max-height: 65vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .ingredients {
-    
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .tab {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .title {
-    padding-top: 40px;
-    width: 100%;
-    padding-bottom: 24px;
+  padding-top: 40px;
+  width: 100%;
+  padding-bottom: 24px;
 }
-
 
 .text {
   flex-wrap: wrap;

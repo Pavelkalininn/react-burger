@@ -6,8 +6,10 @@ import { useDrag } from 'react-dnd';
 
 export default function IngredientCard({ ingredient }) {
   const dispatch = useDispatch();
-  const {ingredients, bun} = useSelector((state) => state.burgerIngredientsSlice);
-  const ingredientCount = ingredients.filter(burgerIngredient => burgerIngredient?._id === ingredient?._id).length
+  const { ingredients } = useSelector((state) => state.burgerIngredientsSlice);
+  const ingredientCount = ingredients.filter(
+    (burgerIngredient) => burgerIngredient?._id === ingredient?._id,
+  ).length;
   const [, drag] = useDrag({
     type: 'new',
     item: ingredient,
@@ -26,7 +28,9 @@ export default function IngredientCard({ ingredient }) {
     >
       <div className={ingredientCardStyles.image}>
         <img src={ingredient.image} alt={ingredient.name} />
-        {ingredientCount ? <Counter count={ingredientCount} size="default" extraClass="m-1" />: null}
+        {ingredientCount ? (
+          <Counter count={ingredientCount} size="default" extraClass="m-1" />
+        ) : null}
       </div>
 
       <span className={ingredientCardStyles.price}>

@@ -1,4 +1,3 @@
-
 .constructor {
   max-height: 60vh;
   overflow-y: auto;
@@ -28,7 +27,6 @@
 .hidden {
   visibility: hidden;
 }
-
 
 .identity {
   padding: 32px 0 60px 0;
