@@ -20,6 +20,11 @@
   color: white;
 }
 
+.activeHref{
+  composes: href;
+  background: navy;
+}
+
 .icon {
   padding-right: 8px;
 }

@@ -6,6 +6,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import headerStyle from './style.module.css';
 import cn from 'classnames';
+import { Link, NavLink } from 'react-router-dom';
 
 export default function AppHeader() {
   return (
@@ -27,10 +28,10 @@ export default function AppHeader() {
         </ul>
         <Logo className={headerStyle.logo} />
         <span className={headerStyle.right}>
-          <a href={'/'} className={headerStyle.href}>
+          <NavLink to={'/profile'} className={({isActive}) => isActive ? headerStyle.activeHref : headerStyle.href}>
             <ProfileIcon className={headerStyle.icon} type="primary" />
             Личный кабинет
-          </a>
+          </NavLink>
         </span>
       </nav>
     </header>
