@@ -7,46 +7,23 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import Modal from '../modal';
 import { dropIngredient } from '../../services/slices/currentIngredient';
+import { CurrentIngredientCard } from '../currentIngredientCard';
+import { useNavigate } from 'react-router-dom';
 
 export default function BurgerIngredients() {
   const { ingredients } = useSelector((state) => state.ingredientsSlice);
   const dispatch = useDispatch();
   const currentIngredient = useSelector((state) => state.currentIngredientSlice);
+  const navigate = useNavigate()
   const modal = currentIngredient && (
     <Modal
       header="Детали ингредиента"
       onClose={() => {
         dispatch(dropIngredient());
+        navigate('/')
       }}
     >
-      <>
-        <img
-          className={ingredientsStyles.image}
-          src={currentIngredient.image_large}
-          alt={currentIngredient.name}
-        />
-        <p className={cn('text text_type_main-large', ingredientsStyles.text)}>
-          {currentIngredient.name}
-        </p>
-        <ul className={cn(ingredientsStyles.structure, 'text text_type_main-default')}>
-          <li className={ingredientsStyles.structureComponents}>
-            <p>Калории, ккал</p>
-            {currentIngredient.calories}
-          </li>
-          <li className={ingredientsStyles.structureComponents}>
-            <p>Белки г.</p>
-            {currentIngredient.proteins}
-          </li>
-          <li className={ingredientsStyles.structureComponents}>
-            <p>Жиры г.</p>
-            {currentIngredient.fat}
-          </li>
-          <li className={ingredientsStyles.structureComponents}>
-            <p>Углеводы г.</p>
-            {currentIngredient.carbohydrates}
-          </li>
-        </ul>
-      </>
+      <CurrentIngredientCard />
     </Modal>
   );
 

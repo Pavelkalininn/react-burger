@@ -17,12 +17,12 @@
   display: flex;
   justify-content: center;
   text-decoration: none;
-  color: white;
+  color: #8585AD;
 }
 
 .activeHref{
   composes: href;
-  background: navy;
+  color: white;
 }
 
 .icon {

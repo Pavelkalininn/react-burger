@@ -1,29 +1,30 @@
 import loginStyles from './style.module.css';
-import {
-  Button,
-  EmailInput,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchPasswordReset, removeState,
-  setEmail,
-} from '../../services/slices/passwordReset';
 import { useEffect } from 'react';
+import { fetchPasswordReset, removeState, setValue } from '../../services/slices/authorization';
 export function ForgotPasswordCard() {
   const dispatch = useDispatch();
-  const { isSuccess, email } = useSelector((state) => state.passwordResetSlice);
+  const { email } = useSelector((state) => state.authorization);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (isSuccess) {
-      navigate('/reset-password');
-      dispatch(removeState())
-    }
-  }, [isSuccess, dispatch, navigate]);
+
+  const onSubmit = () => {
+    dispatch(fetchPasswordReset({ email })).then((res) => {
+      console.log(res);
+      if (res.payload.success) {
+        dispatch(removeState());
+        navigate('/reset-password', { state: { from: { pathname: '/forgot-password' } } });
+      }
+    });
+  };
+  function handleChange(e) {
+    dispatch(setValue({ key: e.target.name, value: e.target.value }));
+  }
   return (
     <>
       <EmailInput
-        onChange={(e) => dispatch(setEmail(e.target.value))}
+        onChange={handleChange}
         name="email"
         value={email}
         isIcon={false}
@@ -35,7 +36,7 @@ export function ForgotPasswordCard() {
         type="primary"
         size="large"
         extraClass={loginStyles.buttonField}
-        onClick={() => dispatch(fetchPasswordReset(email))}
+        onClick={onSubmit}
       >
         Восстановить
       </Button>

@@ -3,10 +3,12 @@ import ingredientCardStyles from './style.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { chooseIngredient } from '../../services/slices/currentIngredient';
 import { useDrag } from 'react-dnd';
+import { replace, useNavigate } from 'react-router-dom';
 
 export default function IngredientCard({ ingredient }) {
   const dispatch = useDispatch();
   const { ingredients } = useSelector((state) => state.burgerIngredientsSlice);
+  const navigate = useNavigate()
   const ingredientCount = ingredients.filter(
     (burgerIngredient) => burgerIngredient?._id === ingredient?._id,
   ).length;
@@ -24,6 +26,8 @@ export default function IngredientCard({ ingredient }) {
       className={ingredientCardStyles.card}
       onClick={() => {
         dispatch(chooseIngredient(ingredient));
+        navigate(`/ingredients/${ingredient?._id}`, { state: {backgroundLocation: true} });
+
       }}
     >
       <div className={ingredientCardStyles.image}>

@@ -1,23 +1,27 @@
-import { useAuth } from '../services/auth';
-import { Navigate, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 
-export function ProtectedRouteElement({ element }) {
-  let { getUser, ...auth } = useAuth();
-  const [isUserLoaded, setUserLoaded] = useState(false);
+import { Navigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-  const init = async () => {
-    await getUser();
-    setUserLoaded(true);
-  };
+export function ProtectedRouteElement({ onlyUnAuth = false, element }) {
+  const { user, isAuthChecked } = useSelector((state) => state.authorization);
+  const location = useLocation();
 
-  useEffect(() => {
-    init();
-  }, [init]);
-
-  if (!isUserLoaded) {
-    return null;
+  if (!isAuthChecked) {
+    return <p>Загрузка...</p>;
   }
 
-  return auth.user ? element : <Navigate to="/login" replace/>;
+  if (!onlyUnAuth && !user) {
+    return <Navigate to="/login" state={{ from: location }} />;
+  }
+
+  if (onlyUnAuth && user) {
+    const { from } = location.state || { from: { pathname: "/" } };
+    return <Navigate to={from} />;
+  }
+  return element;
 }
+
+export const OnlyAuth = ProtectedRouteElement;
+export const OnlyUnAuth = ({element}) => (
+  <ProtectedRouteElement onlyUnAuth={true} element={element} />
+);

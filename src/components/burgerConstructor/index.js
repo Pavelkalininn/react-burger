@@ -13,10 +13,13 @@ import {
   removeIngredients,
 } from '../../services/slices/burgerIngredients';
 import { BurgerConstructorIngredient } from '../burgerConstructorIngredient';
+import { useNavigate } from 'react-router-dom';
 
 export default function BurgerConstructor() {
   const { ingredients, bun } = useSelector((state) => state.burgerIngredientsSlice);
   const { number, isError, error } = useSelector((state) => state.orderNumberSlice);
+  const { user } = useSelector((state) => state.authorization);
+  const navigate = useNavigate();
 
   const [, drop] = useDrop({
     accept: 'new',
@@ -70,9 +73,15 @@ export default function BurgerConstructor() {
         <Button
           htmlType="button"
           onClick={() => {
-            dispatch(
-              fetchOrder([...ingredients.map((ingredient) => ingredient._id), bun._id, bun._id]),
-            );
+            user
+              ? dispatch(
+                  fetchOrder([
+                    ...ingredients.map((ingredient) => ingredient._id),
+                    bun._id,
+                    bun._id,
+                  ]),
+                )
+              : navigate('/login');
           }}
           type="primary"
           size="medium"
