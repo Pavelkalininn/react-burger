@@ -56,7 +56,7 @@ export const fetchUser = createAsyncThunk('fetchUser', async () => {
   }).then((res) => checkResponse(res));
 });
 
-export const updateUser = createAsyncThunk('updateUser', async ({ email, name }) => {
+export const updateUser = createAsyncThunk('updateUser', async ({ email, name, password }) => {
   const token = cookies.get('accessToken');
   return await fetch(`${api_url}/api/auth/user`, {
     method: 'PATCH',
@@ -64,7 +64,7 @@ export const updateUser = createAsyncThunk('updateUser', async ({ email, name })
       'content-type': 'application/json',
       'authorization': token
     },
-    body: JSON.stringify({ email, name }),
+    body: JSON.stringify({ email, name, password }),
   }).then((res) => checkResponse(res));
 });
 

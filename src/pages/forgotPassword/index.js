@@ -9,9 +9,9 @@ export function ForgotPasswordCard() {
   const { email } = useSelector((state) => state.authorization);
   const navigate = useNavigate();
 
-  const onSubmit = () => {
+  const onSubmit = (e) => {
+    e.preventDefault()
     dispatch(fetchPasswordReset({ email })).then((res) => {
-      console.log(res);
       if (res.payload.success) {
         dispatch(removeState());
         navigate('/reset-password', { state: { from: { pathname: '/forgot-password' } } });
@@ -22,7 +22,7 @@ export function ForgotPasswordCard() {
     dispatch(setValue({ key: e.target.name, value: e.target.value }));
   }
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <EmailInput
         onChange={handleChange}
         name="email"
@@ -32,17 +32,16 @@ export function ForgotPasswordCard() {
       />
 
       <Button
-        htmlType="button"
+        htmlType="submit"
         type="primary"
         size="large"
         extraClass={loginStyles.buttonField}
-        onClick={onSubmit}
       >
         Восстановить
       </Button>
       <p className="text_type_main-small">
         Вспомнили пароль? <Link to={'/login'}>Войти</Link>
       </p>
-    </>
+    </form>
   );
 }

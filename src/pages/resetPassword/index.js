@@ -14,7 +14,8 @@ export function ResetPasswordCard() {
   const { token, password, error, isError } = useSelector((state) => state.authorization);
   const navigate = useNavigate();
   const location = useLocation();
-  const onSubmit = () => {
+  const onSubmit = (e) => {
+    e.preventDefault()
     dispatch(fetchPasswordResetSubmit({ password, token })).then((res) => {
       if (res.payload?.success) {
         dispatch(removeState());
@@ -30,9 +31,9 @@ export function ResetPasswordCard() {
   useEffect(() => {
     console.log(location.state);
     if (location.state?.from?.pathname !== '/forgot-password') navigate('/forgot-password');
-  }, []);
+  }, [location.state, navigate]);
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <PasswordInput
         onChange={handleChange}
         value={password}
@@ -53,17 +54,16 @@ export function ResetPasswordCard() {
         extraClass={cn('ml-1', loginStyles.inputField)}
       />
       <Button
-        htmlType="button"
+        htmlType="submit"
         type="primary"
         size="large"
         extraClass={loginStyles.buttonField}
-        onClick={onSubmit}
       >
         Сохранить
       </Button>
       <p className="text_type_main-small">
         Вспомнили пароль? <Link to={'/login'}>Войти</Link>
       </p>
-    </>
+    </form>
   );
 }

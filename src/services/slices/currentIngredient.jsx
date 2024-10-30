@@ -1,11 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 const currentIngredientSlice = createSlice({
   name: 'currentIngredient',
-  initialState: null,
+  initialState: cookies.get('currentIngredient') || null,
   reducers: {
-    chooseIngredient: (state, action) => action.payload,
-    dropIngredient: (state, action) => null,
+    chooseIngredient: (state, action) => {
+      cookies.set('currentIngredient', action.payload);
+      return action.payload;
+    },
+    dropIngredient: (state, action) => {
+      cookies.remove('currentIngredient');
+      return null;
+    },
   },
 });
 

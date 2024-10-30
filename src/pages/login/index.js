@@ -21,12 +21,17 @@ export function LoginPageCard() {
     dispatch(setValue({ key: e.target.name, value: e.target.value }));
   }
 
+  function onSubmit(event) {
+    event.preventDefault();
+    dispatch(fetchLogin({ password, email })).then(() => isSuccess && navigate(from))
+  }
+
   if (isAuthorized) {
     return <Navigate to="/" replace />;
   }
 
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <EmailInput
         onChange={handleChange}
         value={email}
@@ -42,13 +47,10 @@ export function LoginPageCard() {
         error={isError}
       />
       <Button
-        htmlType="button"
         type="primary"
         size="large"
+        htmlType="submit"
         extraClass={loginStyles.buttonField}
-        onClick={() =>
-          dispatch(fetchLogin({ password, email })).then(() => isSuccess && navigate(from))
-        }
       >
         Войти
       </Button>
@@ -58,6 +60,6 @@ export function LoginPageCard() {
       <p className="text_type_main-small">
         Забыли пароль? <Link to={'/forgot-password'}>Восстановить пароль</Link>
       </p>
-    </>
+    </form>
   );
 }

@@ -8,26 +8,31 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchRegister, setValue } from '../../services/slices/authorization';
+import {
+  fetchLogin,
+  fetchRegister,
+  setValue,
+} from '../../services/slices/authorization';
 export function RegisterCard() {
   const dispatch = useDispatch();
-  const { email, password, name, isSuccess, isError, error } = useSelector((state) => state.authorization);
+  const { email, password, name, isError, error } = useSelector((state) => state.authorization);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (isSuccess) {
-      navigate('/login');
-
-    }
-  }, [isSuccess, dispatch, navigate]);
-
   function handleChange(e) {
     dispatch(setValue({key: e.target.name, value: e.target.value}))
   }
 
+  function onSubmit(event) {
+    event.preventDefault();
+    dispatch(fetchRegister({email, password, name}))
+      .then((res) => {
+          if (res.payload.success) navigate('/login')
+        }
+      )
+  }
+
 
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <Input
         type={'text'}
         placeholder={'Имя'}
@@ -55,10 +60,9 @@ export function RegisterCard() {
         error={error}
       />
       <Button
-        htmlType="button"
+        htmlType="submit"
         type="primary"
         size="large"
-        onClick={() => dispatch(fetchRegister({email, password, name}))}
         extraClass={loginStyles.buttonField}
       >
         Зарегистрироваться
@@ -66,6 +70,6 @@ export function RegisterCard() {
       <p className='text_type_main-small'>
         Уже зарегистрированы? <Link to={'/login'}>Войти</Link>
       </p>
-    </>
+    </form>
   );
 }

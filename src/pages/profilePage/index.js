@@ -1,33 +1,26 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import {
-  Button,
-  EmailInput, Input, PasswordInput,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { NavLink } from 'react-router-dom';
+import { Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import profileStyles from './style.module.css';
 import cn from 'classnames';
 import {
+  fetchLogin,
   fetchLogout,
-  removeState,
   setValue,
+  updateUser,
 } from '../../services/slices/authorization';
 
 export function ProfilePageCard() {
   const dispatch = useDispatch();
-  const { email, password, name, isSuccess } = useSelector((state) => state.authorization);
-  const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     navigate('/reset-password');
-  //     dispatch(removeState())
-  //   }
-  // }, [isSuccess, dispatch, navigate]);
-
+  const { email, password, name } = useSelector((state) => state.authorization);
   function handleChange(e) {
-    dispatch(setValue({key: e.target.name, value: e.target.value}))
+    dispatch(setValue({ key: e.target.name, value: e.target.value }));
   }
-  
+  function onSubmit(event) {
+    event.preventDefault();
+    dispatch(updateUser({ email, name, password }))
+  }
+
   return (
     <>
       <div className={profileStyles.grid}>
@@ -55,7 +48,7 @@ export function ProfilePageCard() {
             В этом разделе вы можете изменить свои персональные данные
           </p>
         </div>
-        <div>
+        <form onSubmit={onSubmit}>
           <Input
             type={'text'}
             placeholder={'Имя'}
@@ -89,7 +82,7 @@ export function ProfilePageCard() {
             name={'password'}
             extraClass={cn('mb-2', profileStyles.inputField)}
           />
-        </div>
+        </form>
       </div>
     </>
   );
