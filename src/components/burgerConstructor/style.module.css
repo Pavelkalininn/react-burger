@@ -1,11 +1,11 @@
-
 .constructor {
-  max-height: 60vh;
+  max-height: 50vh;
   overflow-y: auto;
   overflow-x: hidden;
-  display: 'flex';
-  flex-direction: 'column';
-  gap: '10px';
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 50vh;
 }
 
 .bottomMenu {
@@ -27,7 +27,6 @@
 .hidden {
   visibility: hidden;
 }
-
 
 .identity {
   padding: 32px 0 60px 0;

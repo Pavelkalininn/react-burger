@@ -1,0 +1,32 @@
+
+.inputField {
+  margin-top: 24px;
+}
+.buttonField {
+  margin-top: 24px;
+  margin-bottom: 80px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  max-width: 20vw;
+}
+
+.info {
+  margin-top: 80px;
+}
+
+.href {
+  color: white;
+  text-decoration: none;
+}
+.activeHref {
+  composes: href;
+  color: #61dafb;
+}

@@ -1,48 +1,40 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientCardStyles from './style.module.css';
-import Modal from '../modal';
-import { useState } from 'react';
-import cn from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
+import { chooseIngredient } from '../../services/slices/currentIngredient';
+import { useDrag } from 'react-dnd';
+import { replace, useNavigate } from 'react-router-dom';
 
 export default function IngredientCard({ ingredient }) {
-  const [showModal, setShowModal] = useState(false);
-  const modal = (
-    <Modal header="Детали ингредиента" onClose={() => setShowModal(!showModal)}>
-      <>
-        <img
-          className={ingredientCardStyles.image}
-          src={ingredient.image_large}
-          alt={ingredient.name}
-        />
-        <p className={cn('text text_type_main-large', ingredientCardStyles.text)}>
-          {ingredient.name}
-        </p>
-        <ul className={cn(ingredientCardStyles.structure, 'text text_type_main-default')}>
-          <li className={ingredientCardStyles.structureComponents}>
-            <p>Калории, ккал</p>
-            {ingredient.calories}
-          </li>
-          <li className={ingredientCardStyles.structureComponents}>
-            <p>Белки г.</p>
-            {ingredient.proteins}
-          </li>
-          <li className={ingredientCardStyles.structureComponents}>
-            <p>Жиры г.</p>
-            {ingredient.fat}
-          </li>
-          <li className={ingredientCardStyles.structureComponents}>
-            <p>Углеводы г.</p>
-            {ingredient.carbohydrates}
-          </li>
-        </ul>
-      </>
-    </Modal>
-  );
+  const dispatch = useDispatch();
+  const { ingredients } = useSelector((state) => state.burgerIngredientsSlice);
+  const navigate = useNavigate()
+  const ingredientCount = ingredients.filter(
+    (burgerIngredient) => burgerIngredient?._id === ingredient?._id,
+  ).length;
+  const [, drag] = useDrag({
+    type: 'new',
+    item: ingredient,
+    collect: (monitor) => ({
+      isDrag: monitor.isDragging(),
+    }),
+  });
+
   return (
-    <div className={ingredientCardStyles.card} onClick={() => setShowModal(!showModal)}>
+    <div
+      ref={drag}
+      className={ingredientCardStyles.card}
+      onClick={() => {
+        dispatch(chooseIngredient(ingredient));
+        navigate(`/ingredients/${ingredient?._id}`, { state: {backgroundLocation: true} });
+
+      }}
+    >
       <div className={ingredientCardStyles.image}>
         <img src={ingredient.image} alt={ingredient.name} />
-        <Counter count={1} size="default" extraClass="m-1" />
+        {ingredientCount ? (
+          <Counter count={ingredientCount} size="default" extraClass="m-1" />
+        ) : null}
       </div>
 
       <span className={ingredientCardStyles.price}>
@@ -50,7 +42,6 @@ export default function IngredientCard({ ingredient }) {
         <CurrencyIcon type="primary" />
       </span>
       <p className={ingredientCardStyles.text}>{ingredient.name}</p>
-      {showModal && modal}
     </div>
   );
 }
