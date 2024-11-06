@@ -4,10 +4,13 @@ import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { dropIngredientFromBurger, moveIngredient } from '../../services/slices/burgerIngredients';
+import {
+  BurgerConstructorIngredientType,
+} from '../../types/burger';
 
-export function BurgerConstructorIngredient({ pk, item, type = null }) {
+export function BurgerConstructorIngredient({ pk, item, type = undefined }: BurgerConstructorIngredientType) {
   const dispatch = useDispatch();
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const text = `${item.name} ${type === 'top' ? ' (Верх)' : ''}${type === 'bottom' ? ' (Низ)' : ''}`;
 
   const [, drag] = useDrag({
@@ -23,7 +26,7 @@ export function BurgerConstructorIngredient({ pk, item, type = null }) {
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
-    hover(item, monitor) {
+    hover(item: any, monitor) {
       if (!ref.current) {
         return;
       }
@@ -35,7 +38,7 @@ export function BurgerConstructorIngredient({ pk, item, type = null }) {
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = clientOffset?.y || 0 - hoverBoundingRect.top;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }

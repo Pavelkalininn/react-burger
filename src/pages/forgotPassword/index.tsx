@@ -2,15 +2,17 @@ import loginStyles from './style.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import { fetchPasswordReset, removeState, setValue } from '../../services/slices/authorization';
+import { ChangeEvent, FormEvent } from 'react';
+import { AuthorizationType } from '../../types/burger';
 export function ForgotPasswordCard() {
   const dispatch = useDispatch();
-  const { email } = useSelector((state) => state.authorization);
+  const { email } = useSelector((state: AuthorizationType) => state.authorization);
   const navigate = useNavigate();
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    // @ts-ignore
     dispatch(fetchPasswordReset({ email })).then((res) => {
       if (res.payload.success) {
         dispatch(removeState());
@@ -18,7 +20,7 @@ export function ForgotPasswordCard() {
       }
     });
   };
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch(setValue({ key: e.target.name, value: e.target.value }));
   }
   return (

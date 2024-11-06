@@ -3,19 +3,21 @@ import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burg
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 import {
   fetchPasswordResetSubmit,
   removeState,
   setValue,
 } from '../../services/slices/authorization';
+import { AuthorizationType } from '../../types/burger';
 export function ResetPasswordCard() {
   const dispatch = useDispatch();
-  const { token, password, error, isError } = useSelector((state) => state.authorization);
+  const { token, password, error, isError } = useSelector((state: AuthorizationType) => state.authorization);
   const navigate = useNavigate();
   const location = useLocation();
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    // @ts-ignore
     dispatch(fetchPasswordResetSubmit({ password, token })).then((res) => {
       if (res.payload?.success) {
         dispatch(removeState());
@@ -24,7 +26,7 @@ export function ResetPasswordCard() {
       }
     });
   };
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch(setValue({ key: e.target.name, value: e.target.value }));
   }
 
@@ -52,13 +54,10 @@ export function ResetPasswordCard() {
         errorText={error}
         size={'default'}
         extraClass={cn('ml-1', loginStyles.inputField)}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
       />
-      <Button
-        htmlType="submit"
-        type="primary"
-        size="large"
-        extraClass={loginStyles.buttonField}
-      >
+      <Button htmlType="submit" type="primary" size="large" extraClass={loginStyles.buttonField}>
         Сохранить
       </Button>
       <p className="text_type_main-small">

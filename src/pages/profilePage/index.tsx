@@ -4,22 +4,25 @@ import { Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-co
 import profileStyles from './style.module.css';
 import cn from 'classnames';
 import {
-  fetchLogin,
   fetchLogout,
   setValue,
   updateUser,
 } from '../../services/slices/authorization';
+import { ChangeEvent, FormEvent } from 'react';
+import { AuthorizationType } from '../../types/burger';
 
 export function ProfilePageCard() {
   const dispatch = useDispatch();
-  const { email, password, name } = useSelector((state) => state.authorization);
-  function handleChange(e) {
+  const { email, password, name } = useSelector((state: AuthorizationType) => state.authorization);
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch(setValue({ key: e.target.name, value: e.target.value }));
   }
-  function onSubmit(event) {
+  function onSubmit(event:FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    // @ts-ignore
     dispatch(updateUser({ email, name, password }))
   }
+
 
   return (
     <>
@@ -39,7 +42,9 @@ export function ProfilePageCard() {
           </NavLink>
           <NavLink
             to={'/'}
-            onClick={() => dispatch(fetchLogout())}
+            onClick={() => // @ts-ignore
+               dispatch(fetchLogout())
+          }
             className={({ isActive }) => (isActive ? profileStyles.activeHref : profileStyles.href)}
           >
             <p>Выход</p>
@@ -57,10 +62,11 @@ export function ProfilePageCard() {
             value={name}
             name={'name'}
             error={false}
-            onIconClick={'onIconClick'}
             errorText={'Ошибка'}
             size={'default'}
             extraClass={cn('ml-1', profileStyles.inputField)}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
           />
           <Input
             type={'text'}
@@ -70,10 +76,11 @@ export function ProfilePageCard() {
             value={email}
             name={'name'}
             error={false}
-            onIconClick={'onIconClick'}
             errorText={'Ошибка'}
             size={'default'}
             extraClass={cn('ml-1', profileStyles.inputField)}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
           />
           <PasswordInput
             onChange={handleChange}

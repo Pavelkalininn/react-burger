@@ -2,7 +2,7 @@ import './App.css';
 import AppHeader from './components/appHeader';
 import BurgerIngredientsSide from './components/burgerIngredientsSide';
 import BurgerConstructorSide from './components/burgerConstructorSide';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchIngredients } from './services/slices/ingredients';
 import { DndProvider } from 'react-dnd';
@@ -35,53 +35,67 @@ function App() {
 
   useEffect(() => {
     const cookies = new Cookies();
+    // @ts-ignore
     dispatch(fetchIngredients());
     if (cookies.get('accessToken')) {
+      // @ts-ignore
       dispatch(fetchUser()).catch((error) => {
+        // @ts-ignore
         dispatch(fetchToken())
 
       })
     }
     dispatch(setIsAuthChecked(true))
-  }, []);
+  }, [dispatch]);
 
   const LoginPage = pageWrapper(LoginPageCard)
-  const RegisterPage = pageWrapper(RegisterCard)
-  const NotFoundPage = pageWrapper(NotFound404Card)
-  const ForgotPasswordPage = pageWrapper(ForgotPasswordCard)
-  const ResetPasswordPage = pageWrapper(ResetPasswordCard)
-  const ProfilePage = pageWrapper(ProfilePageCard)
-  const IngredientPage = pageWrapper(CurrentIngredientCard)
+  const RegisterPage = pageWrapper(RegisterCard);
+  const NotFoundPage = pageWrapper(NotFound404Card);
+  const ForgotPasswordPage = pageWrapper(ForgotPasswordCard);
+  const ResetPasswordPage = pageWrapper(ResetPasswordCard);
+  const ProfilePage = pageWrapper(ProfilePageCard);
+  const IngredientPage = pageWrapper(CurrentIngredientCard);
 
   return (
     <>
-        <AppHeader />
+      <AppHeader />
 
-        <main className="main">
-          {!backgroundLocation && (
-            <Routes>
-              <Route path='/ingredients/:id' element={<IngredientPage />} />
-            </Routes>
-          )}
-          <Routes location={backgroundLocation || location}>
-            <Route path="/" element={
+      <main className="main">
+        {!backgroundLocation && (
+          <Routes>
+            <Route path="/ingredients/:id" element={<IngredientPage />} />
+          </Routes>
+        )}
+        <Routes location={backgroundLocation || location}>
+          <Route
+            path="/"
+            element={
               <DndProvider backend={HTML5Backend}>
                 <BurgerIngredientsSide />
                 <BurgerConstructorSide />
               </DndProvider>
-            } />
-            <Route path="/login" element={<OnlyUnAuth element={<LoginPage title="Вход" />} />} />
-            <Route path="/register" element={<OnlyUnAuth element={<RegisterPage title='Регистрация'/>} />} />
-            <Route path="/forgot-password" element={<OnlyUnAuth element={<ForgotPasswordPage title='Восстановление пароля' />} />} />
-            <Route path="/reset-password" element={<OnlyUnAuth element={<ResetPasswordPage title='Восстановление пароля' />} />} />
-            <Route path="/profile" element={<OnlyAuth element={<ProfilePage title='' />} />} />
-            <Route path="/ingredients/:id" element={""} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-
-        </main>
-      </>
-      );
+            }
+          />
+          <Route path="/login" element={<OnlyUnAuth element={<LoginPage title="Вход" />} />} />
+          <Route
+            path="/register"
+            element={<OnlyUnAuth element={<RegisterPage title="Регистрация" />} />}
+          />
+          <Route
+            path="/forgot-password"
+            element={<OnlyUnAuth element={<ForgotPasswordPage title="Восстановление пароля" />} />}
+          />
+          <Route
+            path="/reset-password"
+            element={<OnlyUnAuth element={<ResetPasswordPage title="Восстановление пароля" />} />}
+          />
+          <Route path="/profile" element={<OnlyAuth element={<ProfilePage title="" />} />} />
+          <Route path="/ingredients/:id" element={''} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+    </>
+  );
       }
 
 export default App;

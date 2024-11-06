@@ -1,9 +1,11 @@
 
 import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { ReactElement } from 'react';
+import { AuthorizationType } from '../../types/burger';
 
-export function ProtectedRouteElement({ onlyUnAuth = false, element }) {
-  const { user, isAuthChecked } = useSelector((state) => state.authorization);
+export function ProtectedRouteElement({ onlyUnAuth = false, element }: {onlyUnAuth?: boolean; element: ReactElement}): ReactElement {
+  const { user, isAuthChecked } = useSelector((state: AuthorizationType) => state.authorization);
   const location = useLocation();
 
   if (!isAuthChecked) {
@@ -22,6 +24,6 @@ export function ProtectedRouteElement({ onlyUnAuth = false, element }) {
 }
 
 export const OnlyAuth = ProtectedRouteElement;
-export const OnlyUnAuth = ({element}) => (
+export const OnlyUnAuth = ({element}: {element: ReactElement}) => (
   <ProtectedRouteElement onlyUnAuth={true} element={element} />
 );

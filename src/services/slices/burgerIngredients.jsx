@@ -34,8 +34,11 @@ const burgerIngredientsSlice = createSlice({
         state.ingredients.splice(action.payload.hoverIndex, 0, ingredient);
       }
     },
-    removeIngredients: (state) => {
-      return { ingredients: [], bun: null };
+    removeIngredients: () => {
+      return {
+        ingredients: [],
+        bun: null
+      };
     },
   },
 });

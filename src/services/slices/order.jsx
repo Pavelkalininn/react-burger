@@ -2,11 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { api_url } from '../const';
 import { checkResponse } from './utils';
 
-export const fetchOrder = createAsyncThunk('order/fetchOrder', async (ingredients) => {
+export const fetchOrder = createAsyncThunk('order/fetchOrder', async ({ ingredients }) => {
   return await fetch(`${api_url}/api/orders`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ ingredients: ingredients }),
+    body: JSON.stringify({ ingredients }),
   }).then((res) => checkResponse(res));
 });
 
@@ -22,7 +22,7 @@ const orderNumberSlice = createSlice({
     error: '',
   },
   reducers: {
-    removeOrder: (state, action) => {
+    removeOrder: () => {
       return {
         number: null,
         isLoading: false,

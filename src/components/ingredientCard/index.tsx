@@ -3,11 +3,15 @@ import ingredientCardStyles from './style.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { chooseIngredient } from '../../services/slices/currentIngredient';
 import { useDrag } from 'react-dnd';
-import { replace, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import {
+  BurgerIngredientsSliceType,
+  IngredientType,
+} from '../../types/burger';
 
-export default function IngredientCard({ ingredient }) {
+export default function IngredientCard({ ingredient }: {ingredient: IngredientType}) {
   const dispatch = useDispatch();
-  const { ingredients } = useSelector((state) => state.burgerIngredientsSlice);
+  const { ingredients } = useSelector((state: BurgerIngredientsSliceType) => state.burgerIngredientsSlice);
   const navigate = useNavigate()
   const ingredientCount = ingredients.filter(
     (burgerIngredient) => burgerIngredient?._id === ingredient?._id,

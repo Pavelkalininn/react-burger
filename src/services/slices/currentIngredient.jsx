@@ -11,7 +11,7 @@ const currentIngredientSlice = createSlice({
       cookies.set('currentIngredient', action.payload);
       return action.payload;
     },
-    dropIngredient: (state, action) => {
+    dropIngredient: () => {
       cookies.remove('currentIngredient');
       return null;
     },

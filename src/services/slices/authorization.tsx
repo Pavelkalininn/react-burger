@@ -7,7 +7,7 @@ import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
-export const fetchRegister = createAsyncThunk('register', async ({ email, password, name }) => {
+export const fetchRegister = createAsyncThunk('register', async ({ email, password, name }: {password: string, email: string, name: string}) => {
   return await fetch(`${api_url}/api/auth/register`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -16,7 +16,7 @@ export const fetchRegister = createAsyncThunk('register', async ({ email, passwo
 });
 
 
-export const fetchLogin = createAsyncThunk('login', async ({ email, password }) => {
+export const fetchLogin = createAsyncThunk('login', async ({ email, password }: {password: string, email: string}) => {
   return await fetch(`${api_url}/api/auth/login`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -56,7 +56,7 @@ export const fetchUser = createAsyncThunk('fetchUser', async () => {
   }).then((res) => checkResponse(res));
 });
 
-export const updateUser = createAsyncThunk('updateUser', async ({ email, name, password }) => {
+export const updateUser = createAsyncThunk('updateUser', async ({ email, name, password }: {password: string, email: string, name: string}) => {
   const token = cookies.get('accessToken');
   return await fetch(`${api_url}/api/auth/user`, {
     method: 'PATCH',
@@ -70,7 +70,7 @@ export const updateUser = createAsyncThunk('updateUser', async ({ email, name, p
 
 
 
-export const fetchPasswordResetSubmit = createAsyncThunk('password/resetSubmit', async ({password, token}) => {
+export const fetchPasswordResetSubmit = createAsyncThunk('password/resetSubmit', async ({password, token}: {password: string, token: string}) => {
   return await fetch(`${api_url}/api/password-reset/reset`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -78,7 +78,7 @@ export const fetchPasswordResetSubmit = createAsyncThunk('password/resetSubmit',
   }).then((res) => checkResponse(res));
 });
 
-export const fetchPasswordReset = createAsyncThunk('password/reset', async ({email}) => {
+export const fetchPasswordReset = createAsyncThunk('password/reset', async ({email}: {email: string}) => {
   return await fetch(`${api_url}/api/password-reset`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -91,7 +91,7 @@ export const fetchPasswordReset = createAsyncThunk('password/reset', async ({ema
 
 
 
-const initialState = {
+const initialState: {[index: string]:any} = {
   email: '',
   password: '',
   name: '',
@@ -110,10 +110,10 @@ const authorizationSlice = createSlice({
   name: 'authorization',
   initialState,
   reducers: {
-    setValue: (state, action) => {
+    setValue: (state, action:{payload: {key: string, value: string}}) => {
       state[action.payload.key] = action.payload.value;
     },
-    removeState: (state, action) => {
+    removeState: () => {
       return {...initialState, isAuthChecked: true};
     },
     setIsAuthChecked: (state, action) => {

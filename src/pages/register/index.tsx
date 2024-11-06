@@ -9,22 +9,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  fetchLogin,
   fetchRegister,
   setValue,
 } from '../../services/slices/authorization';
+import { ChangeEvent, FormEvent } from 'react';
+import { AuthorizationType } from '../../types/burger';
 export function RegisterCard() {
   const dispatch = useDispatch();
-  const { email, password, name, isError, error } = useSelector((state) => state.authorization);
+  const { email, password, name } = useSelector((state: AuthorizationType) => state.authorization);
   const navigate = useNavigate();
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch(setValue({key: e.target.name, value: e.target.value}))
   }
 
-  function onSubmit(event) {
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    dispatch(fetchRegister({email, password, name}))
-      .then((res) => {
+    // @ts-ignore
+    dispatch(fetchRegister({email, password, name})).then((res) => {
           if (res.payload.success) navigate('/login')
         }
       )
@@ -40,9 +41,10 @@ export function RegisterCard() {
         icon={'CurrencyIcon'}
         value={name}
         name={'name'}
-        onIconClick={"onIconClick"}
         size={'default'}
         extraClass={cn('ml-1', loginStyles.inputField)}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
       />
       <EmailInput
         onChange={handleChange}
@@ -56,18 +58,11 @@ export function RegisterCard() {
         value={password}
         name={'password'}
         extraClass={cn('mb-2', loginStyles.inputField)}
-        isError={isError}
-        error={error}
       />
-      <Button
-        htmlType="submit"
-        type="primary"
-        size="large"
-        extraClass={loginStyles.buttonField}
-      >
+      <Button htmlType="submit" type="primary" size="large" extraClass={loginStyles.buttonField}>
         Зарегистрироваться
       </Button>
-      <p className='text_type_main-small'>
+      <p className="text_type_main-small">
         Уже зарегистрированы? <Link to={'/login'}>Войти</Link>
       </p>
     </form>

@@ -14,11 +14,16 @@ import {
 } from '../../services/slices/burgerIngredients';
 import { BurgerConstructorIngredient } from '../burgerConstructorIngredient';
 import { useNavigate } from 'react-router-dom';
+import {
+  AuthorizationType,
+  BurgerIngredientsSliceType,
+  OrderNumberSliceType,
+} from '../../types/burger';
 
 export default function BurgerConstructor() {
-  const { ingredients, bun } = useSelector((state) => state.burgerIngredientsSlice);
-  const { number, isError, error } = useSelector((state) => state.orderNumberSlice);
-  const { user } = useSelector((state) => state.authorization);
+  const { ingredients, bun } = useSelector((state: BurgerIngredientsSliceType) => state.burgerIngredientsSlice);
+  const { number, isError, error } = useSelector((state: OrderNumberSliceType) => state.orderNumberSlice);
+  const { user } = useSelector((state: AuthorizationType) => state.authorization);
   const navigate = useNavigate();
 
   const [, drop] = useDrop({
@@ -26,7 +31,7 @@ export default function BurgerConstructor() {
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
-    drop(item, monitor) {
+    drop(item:any, monitor) {
       if (item.type === 'bun') return dispatch(addBunToBurger({ ingredient: item }));
       dispatch(addIngredientToBurger({ ingredient: item, id: -1 }));
     },
@@ -40,9 +45,10 @@ export default function BurgerConstructor() {
   }, [ingredients, bun]);
   const modal = (
     <Modal
+      header=''
       onClose={() => {
         dispatch(removeOrder());
-        dispatch(removeIngredients());
+        dispatch(removeIngredients({}));
       }}
     >
       <div>
@@ -58,13 +64,13 @@ export default function BurgerConstructor() {
   return (
     <>
       <div ref={drop}>
-        {bun && <BurgerConstructorIngredient type="top" item={bun} />}
-        <div className={constructorStyles.constructor}>
+        {bun && <BurgerConstructorIngredient type="top" item={bun} pk={0}/>}
+        <div className={cn(constructorStyles.constructor)}>
           {ingredients.map((item, seqNum) => {
-            return <BurgerConstructorIngredient key={item.uuid} item={item} pk={seqNum} />;
+            return <BurgerConstructorIngredient key={item.uuid} item={item} pk={seqNum} type={undefined} />;
           })}
         </div>
-        {bun && <BurgerConstructorIngredient type="bottom" item={bun} />}
+        {bun && <BurgerConstructorIngredient type="bottom" item={bun} pk={-1}/>}
       </div>
       <p className={cn('text text_type_digits-default', constructorStyles.bottomMenu)}>
         {orderSum}
@@ -73,13 +79,14 @@ export default function BurgerConstructor() {
         <Button
           htmlType="button"
           onClick={() => {
-            user
-              ? dispatch(
-                  fetchOrder([
+            user ? dispatch(
+                // @ts-ignore
+                  fetchOrder({ingredients:[
                     ...ingredients.map((ingredient) => ingredient._id),
                     bun._id,
-                    bun._id,
-                  ]),
+                    bun._id
+          ]
+          }),
                 )
               : navigate('/login');
           }}

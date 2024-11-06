@@ -1,14 +1,13 @@
 import modalStyles from './style.module.css';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
-import { useCallback, useEffect } from 'react';
+import { ReactNode, useCallback, useEffect } from 'react';
 import { ModalBody } from '../modalBody';
 
-const modalRoot = document.getElementById('react-modals');
+const modalRoot = document.getElementById('react-modals')!;
 
-export default function Modal({ children, header, onClose }) {
+export default function Modal({ children, header, onClose }: {children: ReactNode, header: string, onClose: () => void}) {
   const keyDownHandler = useCallback(
-    (event) => {
+    (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
       }
@@ -30,9 +29,3 @@ export default function Modal({ children, header, onClose }) {
     modalRoot,
   );
 }
-
-Modal.propTypes = {
-  children: PropTypes.element,
-  header: PropTypes.string,
-  onClose: PropTypes.func,
-};

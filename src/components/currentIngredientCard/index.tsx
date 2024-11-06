@@ -3,18 +3,22 @@ import cn from 'classnames';
 import { useParams } from 'react-router-dom';
 import { chooseIngredient } from '../../services/slices/currentIngredient';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  currentIngredientSliceType,
+  ingredientsSliceType,
+} from '../../types/burger';
 
 
 export function CurrentIngredientCard(){
   const dispatch = useDispatch();
-  const { ingredients } = useSelector((state) => state.ingredientsSlice);
-  const currentIngredient = useSelector((state) => state.currentIngredientSlice);
+  const { ingredients } = useSelector((state: ingredientsSliceType) => state.ingredientsSlice);
+  const currentIngredient = useSelector((state: currentIngredientSliceType) => state.currentIngredientSlice);
   const ingredientId = useParams().id;
   if (!currentIngredient){
     dispatch(chooseIngredient(ingredients.find(ingredient => ingredient._id === ingredientId)));
   }
 
-  if (!currentIngredient) return 'LOADING'
+  if (!currentIngredient) return <div>'LOADING'</div>
   return(
     <>
       <img
