@@ -31,7 +31,6 @@ export function ResetPasswordCard() {
   }
 
   useEffect(() => {
-    console.log(location.state);
     if (location.state?.from?.pathname !== '/forgot-password') navigate('/forgot-password');
   }, [location.state, navigate]);
   return (
