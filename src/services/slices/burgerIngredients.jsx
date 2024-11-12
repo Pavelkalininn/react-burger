@@ -29,9 +29,9 @@ const burgerIngredientsSlice = createSlice({
       },
     },
     moveIngredient: (state, action) => {
-      if (action.payload.dragIndex) {
+      if (typeof action.payload.dragIndex !== 'undefined') {
         const ingredient  = state.ingredients.splice(action.payload.dragIndex, 1)[0];
-        state.ingredients.splice(action.payload.hoverIndex, 0, ingredient);
+        state.ingredients.splice(action.payload.hoverIndex , 0, ingredient);
       }
     },
     removeIngredients: () => {

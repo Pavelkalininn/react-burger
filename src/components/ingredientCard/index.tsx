@@ -11,11 +11,11 @@ import {
 
 export default function IngredientCard({ ingredient }: {ingredient: IngredientType}) {
   const dispatch = useDispatch();
-  const { ingredients } = useSelector((state: BurgerIngredientsSliceType) => state.burgerIngredientsSlice);
+  const { ingredients, bun } = useSelector((state: BurgerIngredientsSliceType) => state.burgerIngredientsSlice);
   const navigate = useNavigate()
-  const ingredientCount = ingredients.filter(
+  const ingredientCount = (ingredients.filter(
     (burgerIngredient) => burgerIngredient?._id === ingredient?._id,
-  ).length;
+  ).length || 0) + (bun?._id === ingredient._id ? 2 : 0);
   const [, drag] = useDrag({
     type: 'new',
     item: ingredient,

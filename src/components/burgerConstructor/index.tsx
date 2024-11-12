@@ -64,13 +64,20 @@ export default function BurgerConstructor() {
   return (
     <>
       <div ref={drop}>
-        {bun && <BurgerConstructorIngredient type="top" item={bun} pk={0}/>}
+        {bun && <BurgerConstructorIngredient type="top" item={bun} pk={0} />}
         <div className={cn(constructorStyles.constructor)}>
           {ingredients.map((item, seqNum) => {
-            return <BurgerConstructorIngredient key={item.uuid} item={item} pk={seqNum} type={undefined} />;
+            return (
+              <BurgerConstructorIngredient
+                key={item.uuid}
+                item={item}
+                pk={seqNum}
+                type={undefined}
+              />
+            );
           })}
         </div>
-        {bun && <BurgerConstructorIngredient type="bottom" item={bun} pk={-1}/>}
+        {bun && <BurgerConstructorIngredient type="bottom" item={bun} pk={-1} />}
       </div>
       <p className={cn('text text_type_digits-default', constructorStyles.bottomMenu)}>
         {orderSum}
@@ -79,14 +86,16 @@ export default function BurgerConstructor() {
         <Button
           htmlType="button"
           onClick={() => {
-            user ? dispatch(
-                // @ts-ignore
-                  fetchOrder({ingredients:[
-                    ...ingredients.map((ingredient) => ingredient._id),
-                    bun._id,
-                    bun._id
-          ]
-          }),
+            user
+              ? dispatch(
+                  // @ts-ignore
+                  fetchOrder({
+                    ingredients: [
+                      ...ingredients.map((ingredient) => ingredient._id),
+                      bun._id,
+                      bun._id,
+                    ],
+                  }),
                 )
               : navigate('/login');
           }}

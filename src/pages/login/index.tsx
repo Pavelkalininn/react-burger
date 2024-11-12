@@ -29,10 +29,6 @@ export function LoginPageCard() {
     dispatch(fetchLogin({ password, email })).then(() => isSuccess && navigate(from))
   }
 
-  if (isAuthChecked) {
-    return <Navigate to="/" replace />;
-  }
-
   return (
     <form onSubmit={onSubmit}>
       <EmailInput

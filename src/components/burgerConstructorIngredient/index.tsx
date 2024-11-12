@@ -27,27 +27,26 @@ export function BurgerConstructorIngredient({ pk, item, type = undefined }: Burg
       isHover: monitor.isOver(),
     }),
     hover(item: any, monitor) {
-      if (!ref.current) {
-        return;
-      }
-      const dragIndex = item.id;
+      if (!ref.current) return;
+
+      const dragIndex = item.index;
       const hoverIndex = pk;
-      if (dragIndex === hoverIndex) {
-        return;
-      }
+
+      if (dragIndex === hoverIndex) return;
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset?.y || 0 - hoverBoundingRect.top;
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
-      }
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
+      const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
+
       dispatch(moveIngredient({ dragIndex, hoverIndex }));
-      item.id = hoverIndex;
+      item.index = hoverIndex;
     },
+
   });
 
   drag(drop(ref));
