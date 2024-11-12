@@ -10,7 +10,6 @@ export const pageWrapper =
       <div className={cn(wrapperStyles.wrapper, 'text text_type_main-default')}>
         <p className={'text text_type_main-medium'}>{title}</p>
         {
-          // @ts-ignore
           <WrappedComponent {...props} />
         }
       </div>
