@@ -1,5 +1,9 @@
 
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import { api_url } from '../const';
 import { checkResponse } from './utils';
 import Cookies from 'universal-cookie';
@@ -87,11 +91,23 @@ export const fetchPasswordReset = createAsyncThunk('password/reset', async ({ema
 });
 
 
+export type TAuthorizationInitialState = {
+  email: string,
+  password: string,
+  name: string,
+  user: string,
+  token: string,
+  isAuthChecked: boolean,
+  isLoading: boolean,
+  isSuccess: boolean,
+  isFetched: boolean,
+  isError: boolean,
+  error: string | undefined
+}
 
 
 
-
-const initialState: {[index: string]:any} = {
+export const authorizationInitialState: TAuthorizationInitialState = {
   email: '',
   password: '',
   name: '',
@@ -105,16 +121,21 @@ const initialState: {[index: string]:any} = {
   error: ''
 }
 
+type IChangeAction<K extends keyof TAuthorizationInitialState> = {
+  key: K;
+  value: TAuthorizationInitialState[K];
+};
+
 
 const authorizationSlice = createSlice({
   name: 'authorization',
-  initialState,
+  initialState: authorizationInitialState,
   reducers: {
-    setValue: (state, action:{payload: {key: string, value: string}}) => {
+    setValue: <K extends keyof TAuthorizationInitialState>(state: TAuthorizationInitialState, action: PayloadAction<IChangeAction<K>>) => {
       state[action.payload.key] = action.payload.value;
     },
     removeState: () => {
-      return {...initialState, isAuthChecked: true};
+      return {...authorizationInitialState, isAuthChecked: true};
     },
     setIsAuthChecked: (state, action) => {
       state.isAuthChecked = action.payload;
@@ -182,7 +203,7 @@ const authorizationSlice = createSlice({
         if (action.payload.success) {
           cookies.remove('refreshToken');
           cookies.remove('accessToken');
-          return {...initialState, isAuthChecked: true}
+          return {...authorizationInitialState, isAuthChecked: true}
         }
         state.isLoading = false;
         state.isFetched = true;

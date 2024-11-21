@@ -15,6 +15,10 @@ export type IngredientType = {
   uuid?:string
 }
 
+export type TIngredientWithUUID = IngredientType & {
+  uuid: string
+}
+
 export type BurgerIngredientsSliceType = {
   burgerIngredientsSlice: {
     ingredients: ReadonlyArray<IngredientType>,

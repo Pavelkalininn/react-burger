@@ -1,4 +1,4 @@
-export const checkResponse = (res) => {
+export const checkResponse: (res: Response) => Promise<any> = (res) => {
   return new Promise((resolve, reject) => {
     if (res.status === 204) {
       return resolve(res);

@@ -3,8 +3,6 @@ import { RefObject, useEffect, useRef, useState } from 'react';
 import IngredientCard from '../ingredientCard';
 import ingredientsStyles from './style.module.css';
 import cn from 'classnames';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import Modal from '../modal';
 import { dropIngredient } from '../../services/slices/currentIngredient';
 import { CurrentIngredientCard } from '../currentIngredientCard';
@@ -13,11 +11,12 @@ import {
   currentIngredientSliceType,
   ingredientsSliceType,
 } from '../../types/burger';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export default function BurgerIngredients() {
-  const { ingredients } = useSelector((state: ingredientsSliceType) => state.ingredientsSlice);
-  const dispatch = useDispatch();
-  const currentIngredient = useSelector((state: currentIngredientSliceType) => state.currentIngredientSlice);
+  const { ingredients } = useAppSelector((state: ingredientsSliceType) => state.ingredientsSlice);
+  const dispatch = useAppDispatch();
+  const currentIngredient = useAppSelector((state: currentIngredientSliceType) => state.currentIngredientSlice);
   const navigate = useNavigate()
   const modal = currentIngredient && (
     <Modal

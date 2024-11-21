@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { api_url } from '../const';
 import { checkResponse } from './utils';
+import { IngredientType } from '../../types/burger';
 
 export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async () => {
   return await fetch(`${api_url}/api/ingredients`, {
@@ -9,15 +10,25 @@ export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients',
   }).then((res) => checkResponse(res));
 });
 
+type TInitialState = {
+  ingredients: IngredientType[],
+  isLoading: boolean,
+  isFetched: boolean,
+  isError: boolean,
+  error: string,
+}
+
+const initialState: TInitialState = {
+  ingredients: [],
+  isLoading: false,
+  isFetched: false,
+  isError: false,
+  error: '',
+}
+
 const ingredientsSlice = createSlice({
   name: 'ingredients',
-  initialState: {
-    ingredients: [],
-    isLoading: false,
-    isFetched: false,
-    isError: false,
-    error: '',
-  },
+  initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -31,7 +42,7 @@ const ingredientsSlice = createSlice({
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.isError = true;
-        state.error = action.error.message;
+        state.error = action.error.message || '';
       });
   },
 });

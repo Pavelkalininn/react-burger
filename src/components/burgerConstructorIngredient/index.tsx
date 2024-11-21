@@ -1,15 +1,15 @@
 import constructorStyles from './style.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { dropIngredientFromBurger, moveIngredient } from '../../services/slices/burgerIngredients';
 import {
   BurgerConstructorIngredientType,
 } from '../../types/burger';
+import { useAppDispatch } from '../../hooks';
 
 export function BurgerConstructorIngredient({ pk, item, type = undefined }: BurgerConstructorIngredientType) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const ref = useRef<HTMLDivElement>(null);
   const text = `${item.name} ${type === 'top' ? ' (Верх)' : ''}${type === 'bottom' ? ' (Низ)' : ''}`;
 
@@ -63,7 +63,7 @@ export function BurgerConstructorIngredient({ pk, item, type = undefined }: Burg
         text={text}
         price={item.price}
         thumbnail={item.image}
-        handleClose={() => dispatch(dropIngredientFromBurger(item.uuid))}
+        handleClose={() => dispatch(dropIngredientFromBurger(item.uuid!))}
       />
     </div>
   );

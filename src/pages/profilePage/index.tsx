@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import profileStyles from './style.module.css';
@@ -6,20 +5,21 @@ import cn from 'classnames';
 import {
   fetchLogout,
   setValue,
+  TAuthorizationInitialState,
   updateUser,
 } from '../../services/slices/authorization';
 import { ChangeEvent, FormEvent } from 'react';
-import { AuthorizationType } from '../../types/burger';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export function ProfilePageCard() {
-  const dispatch = useDispatch();
-  const { email, password, name } = useSelector((state: AuthorizationType) => state.authorization);
+  const dispatch = useAppDispatch();
+  const { email, password, name } = useAppSelector(state => state.authorization);
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    dispatch(setValue({ key: e.target.name, value: e.target.value }));
+    const key = e.target.name as keyof TAuthorizationInitialState;
+    dispatch(setValue({ key: key, value: e.target.value }));
   }
   function onSubmit(event:FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // @ts-ignore
     dispatch(updateUser({ email, name, password }))
   }
 
@@ -42,8 +42,7 @@ export function ProfilePageCard() {
           </NavLink>
           <NavLink
             to={'/'}
-            onClick={() => // @ts-ignore
-               dispatch(fetchLogout())
+            onClick={() => dispatch(fetchLogout())
           }
             className={({ isActive }) => (isActive ? profileStyles.activeHref : profileStyles.href)}
           >

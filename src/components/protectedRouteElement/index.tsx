@@ -1,11 +1,10 @@
 
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { ReactElement } from 'react';
-import { AuthorizationType } from '../../types/burger';
+import { useAppSelector } from '../../hooks';
 
 export function ProtectedRouteElement({ onlyUnAuth = false, element }: {onlyUnAuth?: boolean; element: ReactElement}): ReactElement {
-  const { user, isAuthChecked } = useSelector((state: AuthorizationType) => state.authorization);
+  const { user, isAuthChecked } = useAppSelector(state => state.authorization);
   const location = useLocation();
 
   if (!isAuthChecked) {

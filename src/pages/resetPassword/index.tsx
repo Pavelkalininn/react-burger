@@ -2,22 +2,20 @@ import loginStyles from './style.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
 import { ChangeEvent, FormEvent, useEffect } from 'react';
 import {
   fetchPasswordResetSubmit,
   removeState,
-  setValue,
+  setValue, TAuthorizationInitialState,
 } from '../../services/slices/authorization';
-import { AuthorizationType } from '../../types/burger';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 export function ResetPasswordCard() {
-  const dispatch = useDispatch();
-  const { token, password, error, isError } = useSelector((state: AuthorizationType) => state.authorization);
+  const dispatch = useAppDispatch();
+  const { token, password, error, isError } = useAppSelector(state => state.authorization);
   const navigate = useNavigate();
   const location = useLocation();
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // @ts-ignore
     dispatch(fetchPasswordResetSubmit({ password, token })).then((res) => {
       if (res.payload?.success) {
         dispatch(removeState());
@@ -27,7 +25,8 @@ export function ResetPasswordCard() {
     });
   };
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    dispatch(setValue({ key: e.target.name, value: e.target.value }));
+    const key = e.target.name as keyof TAuthorizationInitialState;
+    dispatch(setValue({ key: key, value: e.target.value }));
   }
 
   useEffect(() => {

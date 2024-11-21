@@ -2,7 +2,6 @@ import './App.css';
 import AppHeader from './components/appHeader';
 import BurgerIngredientsSide from './components/burgerIngredientsSide';
 import BurgerConstructorSide from './components/burgerConstructorSide';
-import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchIngredients } from './services/slices/ingredients';
 import { DndProvider } from 'react-dnd';
@@ -26,21 +25,19 @@ import {
 } from './services/slices/authorization';
 import Cookies from 'universal-cookie';
 import { CurrentIngredientCard } from './components/currentIngredientCard';
+import { useAppDispatch } from './hooks';
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   let location = useLocation()
 
   let backgroundLocation = location.state?.backgroundLocation
 
   useEffect(() => {
     const cookies = new Cookies();
-    // @ts-ignore
     dispatch(fetchIngredients());
     if (cookies.get('accessToken')) {
-      // @ts-ignore
       dispatch(fetchUser()).catch((error) => {
-        // @ts-ignore
         dispatch(fetchToken())
 
       })

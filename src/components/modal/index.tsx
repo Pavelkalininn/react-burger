@@ -15,8 +15,8 @@ export default function Modal({ children, header, onClose }: {children: ReactNod
     [onClose],
   );
   const handleClick = (event: React.MouseEvent<HTMLElement, MouseEvent>)=>  {
-    // @ts-ignore
-    if (event.target?.className === modalStyles.modal)
+    const target = event.target as HTMLElement;
+    if (target?.className === modalStyles.modal)
     onClose();
   }
 

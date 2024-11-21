@@ -4,7 +4,6 @@ import cn from 'classnames';
 import Modal from '../modal';
 import { useMemo } from 'react';
 import tickImage from '../../images/tick.svg';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchOrder, removeOrder } from '../../services/slices/order';
 import { useDrop } from 'react-dnd';
 import {
@@ -15,15 +14,14 @@ import {
 import { BurgerConstructorIngredient } from '../burgerConstructorIngredient';
 import { useNavigate } from 'react-router-dom';
 import {
-  AuthorizationType,
-  BurgerIngredientsSliceType,
-  OrderNumberSliceType,
+  IngredientType,
 } from '../../types/burger';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export default function BurgerConstructor() {
-  const { ingredients, bun } = useSelector((state: BurgerIngredientsSliceType) => state.burgerIngredientsSlice);
-  const { number, isError, error } = useSelector((state: OrderNumberSliceType) => state.orderNumberSlice);
-  const { user } = useSelector((state: AuthorizationType) => state.authorization);
+  const { ingredients, bun } = useAppSelector(state => state.burgerIngredientsSlice);
+  const { number, isError, error } = useAppSelector(state => state.orderNumberSlice);
+  const { user } = useAppSelector(state => state.authorization);
   const navigate = useNavigate();
 
   const [, drop] = useDrop({
@@ -37,9 +35,9 @@ export default function BurgerConstructor() {
     },
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const orderSum = useMemo(() => {
-    const ingredientsSum = ingredients.reduce((result, ingredient) => result + ingredient.price, 0);
+    const ingredientsSum: number = ingredients.reduce((result: number, ingredient: IngredientType) => result + ingredient.price, 0);
     const bunSum = bun ? bun.price * 2 : 0;
     return ingredientsSum + bunSum;
   }, [ingredients, bun]);
@@ -48,7 +46,7 @@ export default function BurgerConstructor() {
       header=''
       onClose={() => {
         dispatch(removeOrder());
-        dispatch(removeIngredients({}));
+        dispatch(removeIngredients());
       }}
     >
       <div>
@@ -88,14 +86,13 @@ export default function BurgerConstructor() {
           onClick={() => {
             user
               ? dispatch(
-                  // @ts-ignore
-                  fetchOrder({
-                    ingredients: [
+                  fetchOrder(
+                    [
                       ...ingredients.map((ingredient) => ingredient._id),
-                      bun._id,
-                      bun._id,
+                      bun!._id,
+                      bun!._id,
                     ],
-                  }),
+                  ),
                 )
               : navigate('/login');
           }}

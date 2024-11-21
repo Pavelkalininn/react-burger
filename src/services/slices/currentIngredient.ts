@@ -1,13 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'universal-cookie';
+import { IngredientType } from '../../types/burger';
 
 const cookies = new Cookies();
 
+const initialState: IngredientType | null = cookies.get('currentIngredient') || null;
+
 const currentIngredientSlice = createSlice({
   name: 'currentIngredient',
-  initialState: cookies.get('currentIngredient') || null,
+  initialState: initialState,
   reducers: {
-    chooseIngredient: (state, action) => {
+    chooseIngredient: (state, action: PayloadAction<IngredientType>) => {
       cookies.set('currentIngredient', action.payload);
       return action.payload;
     },

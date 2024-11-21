@@ -7,24 +7,23 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchRegister,
-  setValue,
+  setValue, TAuthorizationInitialState,
 } from '../../services/slices/authorization';
 import { ChangeEvent, FormEvent } from 'react';
-import { AuthorizationType } from '../../types/burger';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 export function RegisterCard() {
-  const dispatch = useDispatch();
-  const { email, password, name } = useSelector((state: AuthorizationType) => state.authorization);
+  const dispatch = useAppDispatch();
+  const { email, password, name } = useAppSelector(state => state.authorization);
   const navigate = useNavigate();
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    dispatch(setValue({key: e.target.name, value: e.target.value}))
+    const key = e.target.name as keyof TAuthorizationInitialState;
+    dispatch(setValue({ key: key, value: e.target.value }));
   }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // @ts-ignore
     dispatch(fetchRegister({email, password, name})).then((res) => {
           if (res.payload.success) navigate('/login')
         }
