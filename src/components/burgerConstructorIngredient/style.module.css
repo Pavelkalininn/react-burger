@@ -1,4 +1,7 @@
 .element {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
   padding-bottom: 16px;
 }
 

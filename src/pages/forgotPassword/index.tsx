@@ -1,15 +1,19 @@
 import loginStyles from './style.module.css';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchPasswordReset, removeState, setValue } from '../../services/slices/authorization';
+import {
+  fetchPasswordReset,
+  removeState,
+  setValue, TAuthorizationInitialState,
+} from '../../services/slices/authorization';
+import { ChangeEvent, FormEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 export function ForgotPasswordCard() {
-  const dispatch = useDispatch();
-  const { email } = useSelector((state) => state.authorization);
+  const dispatch = useAppDispatch();
+  const { email } = useAppSelector(state=> state.authorization);
   const navigate = useNavigate();
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     dispatch(fetchPasswordReset({ email })).then((res) => {
       if (res.payload.success) {
@@ -18,8 +22,9 @@ export function ForgotPasswordCard() {
       }
     });
   };
-  function handleChange(e) {
-    dispatch(setValue({ key: e.target.name, value: e.target.value }));
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const key = e.target.name as keyof TAuthorizationInitialState;
+    dispatch(setValue({ key: key, value: e.target.value }));
   }
   return (
     <form onSubmit={onSubmit}>

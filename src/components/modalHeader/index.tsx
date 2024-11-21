@@ -1,9 +1,9 @@
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import modalHeaderStyles from './style.module.css';
 import cn from 'classnames';
-import PropTypes from 'prop-types';
+import { ReactNode } from 'react';
 
-export function ModalHeader({ children, onClose }) {
+export function ModalHeader({ children, onClose }: {children: ReactNode, onClose: () => void }) {
   return (
     <div className={cn('text text_type_main-large', modalHeaderStyles.header)}>
       <div className={modalHeaderStyles.left}>
@@ -16,7 +16,3 @@ export function ModalHeader({ children, onClose }) {
   );
 }
 
-ModalHeader.propTypes = {
-  children: PropTypes.string,
-  onClose: PropTypes.func,
-};

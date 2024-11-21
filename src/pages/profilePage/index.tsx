@@ -1,25 +1,28 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import profileStyles from './style.module.css';
 import cn from 'classnames';
 import {
-  fetchLogin,
   fetchLogout,
   setValue,
+  TAuthorizationInitialState,
   updateUser,
 } from '../../services/slices/authorization';
+import { ChangeEvent, FormEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export function ProfilePageCard() {
-  const dispatch = useDispatch();
-  const { email, password, name } = useSelector((state) => state.authorization);
-  function handleChange(e) {
-    dispatch(setValue({ key: e.target.name, value: e.target.value }));
+  const dispatch = useAppDispatch();
+  const { email, password, name } = useAppSelector(state => state.authorization);
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const key = e.target.name as keyof TAuthorizationInitialState;
+    dispatch(setValue({ key: key, value: e.target.value }));
   }
-  function onSubmit(event) {
+  function onSubmit(event:FormEvent<HTMLFormElement>) {
     event.preventDefault();
     dispatch(updateUser({ email, name, password }))
   }
+
 
   return (
     <>
@@ -39,7 +42,8 @@ export function ProfilePageCard() {
           </NavLink>
           <NavLink
             to={'/'}
-            onClick={() => dispatch(fetchLogout())}
+            onClick={() => dispatch(fetchLogout())
+          }
             className={({ isActive }) => (isActive ? profileStyles.activeHref : profileStyles.href)}
           >
             <p>Выход</p>
@@ -57,10 +61,11 @@ export function ProfilePageCard() {
             value={name}
             name={'name'}
             error={false}
-            onIconClick={'onIconClick'}
             errorText={'Ошибка'}
             size={'default'}
             extraClass={cn('ml-1', profileStyles.inputField)}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
           />
           <Input
             type={'text'}
@@ -70,10 +75,11 @@ export function ProfilePageCard() {
             value={email}
             name={'name'}
             error={false}
-            onIconClick={'onIconClick'}
             errorText={'Ошибка'}
             size={'default'}
             extraClass={cn('ml-1', profileStyles.inputField)}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
           />
           <PasswordInput
             onChange={handleChange}

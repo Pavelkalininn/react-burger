@@ -6,7 +6,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import headerStyle from './style.module.css';
 import cn from 'classnames';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export default function AppHeader() {
   return (

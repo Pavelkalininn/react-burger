@@ -2,19 +2,19 @@ import loginStyles from './style.module.css';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 import {
   fetchPasswordResetSubmit,
   removeState,
-  setValue,
+  setValue, TAuthorizationInitialState,
 } from '../../services/slices/authorization';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 export function ResetPasswordCard() {
-  const dispatch = useDispatch();
-  const { token, password, error, isError } = useSelector((state) => state.authorization);
+  const dispatch = useAppDispatch();
+  const { token, password, error, isError } = useAppSelector(state => state.authorization);
   const navigate = useNavigate();
   const location = useLocation();
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     dispatch(fetchPasswordResetSubmit({ password, token })).then((res) => {
       if (res.payload?.success) {
@@ -24,12 +24,12 @@ export function ResetPasswordCard() {
       }
     });
   };
-  function handleChange(e) {
-    dispatch(setValue({ key: e.target.name, value: e.target.value }));
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const key = e.target.name as keyof TAuthorizationInitialState;
+    dispatch(setValue({ key: key, value: e.target.value }));
   }
 
   useEffect(() => {
-    console.log(location.state);
     if (location.state?.from?.pathname !== '/forgot-password') navigate('/forgot-password');
   }, [location.state, navigate]);
   return (
@@ -52,13 +52,10 @@ export function ResetPasswordCard() {
         errorText={error}
         size={'default'}
         extraClass={cn('ml-1', loginStyles.inputField)}
+        onPointerEnterCapture={undefined}
+        onPointerLeaveCapture={undefined}
       />
-      <Button
-        htmlType="submit"
-        type="primary"
-        size="large"
-        extraClass={loginStyles.buttonField}
-      >
+      <Button htmlType="submit" type="primary" size="large" extraClass={loginStyles.buttonField}>
         Сохранить
       </Button>
       <p className="text_type_main-small">

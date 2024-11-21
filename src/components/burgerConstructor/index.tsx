@@ -4,7 +4,6 @@ import cn from 'classnames';
 import Modal from '../modal';
 import { useMemo } from 'react';
 import tickImage from '../../images/tick.svg';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchOrder, removeOrder } from '../../services/slices/order';
 import { useDrop } from 'react-dnd';
 import {
@@ -14,11 +13,15 @@ import {
 } from '../../services/slices/burgerIngredients';
 import { BurgerConstructorIngredient } from '../burgerConstructorIngredient';
 import { useNavigate } from 'react-router-dom';
+import {
+  IngredientType,
+} from '../../types/burger';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export default function BurgerConstructor() {
-  const { ingredients, bun } = useSelector((state) => state.burgerIngredientsSlice);
-  const { number, isError, error } = useSelector((state) => state.orderNumberSlice);
-  const { user } = useSelector((state) => state.authorization);
+  const { ingredients, bun } = useAppSelector(state => state.burgerIngredientsSlice);
+  const { number, isError, error } = useAppSelector(state => state.orderNumberSlice);
+  const { user } = useAppSelector(state => state.authorization);
   const navigate = useNavigate();
 
   const [, drop] = useDrop({
@@ -26,20 +29,21 @@ export default function BurgerConstructor() {
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
-    drop(item, monitor) {
+    drop(item:any, monitor) {
       if (item.type === 'bun') return dispatch(addBunToBurger({ ingredient: item }));
       dispatch(addIngredientToBurger({ ingredient: item, id: -1 }));
     },
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const orderSum = useMemo(() => {
-    const ingredientsSum = ingredients.reduce((result, ingredient) => result + ingredient.price, 0);
+    const ingredientsSum: number = ingredients.reduce((result: number, ingredient: IngredientType) => result + ingredient.price, 0);
     const bunSum = bun ? bun.price * 2 : 0;
     return ingredientsSum + bunSum;
   }, [ingredients, bun]);
   const modal = (
     <Modal
+      header=''
       onClose={() => {
         dispatch(removeOrder());
         dispatch(removeIngredients());
@@ -58,13 +62,20 @@ export default function BurgerConstructor() {
   return (
     <>
       <div ref={drop}>
-        {bun && <BurgerConstructorIngredient type="top" item={bun} />}
-        <div className={constructorStyles.constructor}>
+        {bun && <BurgerConstructorIngredient type="top" item={bun} pk={0} />}
+        <div className={cn(constructorStyles.constructor)}>
           {ingredients.map((item, seqNum) => {
-            return <BurgerConstructorIngredient key={item.uuid} item={item} pk={seqNum} />;
+            return (
+              <BurgerConstructorIngredient
+                key={item.uuid}
+                item={item}
+                pk={seqNum}
+                type={undefined}
+              />
+            );
           })}
         </div>
-        {bun && <BurgerConstructorIngredient type="bottom" item={bun} />}
+        {bun && <BurgerConstructorIngredient type="bottom" item={bun} pk={-1} />}
       </div>
       <p className={cn('text text_type_digits-default', constructorStyles.bottomMenu)}>
         {orderSum}
@@ -75,11 +86,13 @@ export default function BurgerConstructor() {
           onClick={() => {
             user
               ? dispatch(
-                  fetchOrder([
-                    ...ingredients.map((ingredient) => ingredient._id),
-                    bun._id,
-                    bun._id,
-                  ]),
+                  fetchOrder(
+                    [
+                      ...ingredients.map((ingredient) => ingredient._id),
+                      bun!._id,
+                      bun!._id,
+                    ],
+                  ),
                 )
               : navigate('/login');
           }}

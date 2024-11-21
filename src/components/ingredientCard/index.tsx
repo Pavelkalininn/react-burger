@@ -1,17 +1,20 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientCardStyles from './style.module.css';
-import { useDispatch, useSelector } from 'react-redux';
 import { chooseIngredient } from '../../services/slices/currentIngredient';
 import { useDrag } from 'react-dnd';
-import { replace, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import {
+  IngredientType,
+} from '../../types/burger';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
-export default function IngredientCard({ ingredient }) {
-  const dispatch = useDispatch();
-  const { ingredients } = useSelector((state) => state.burgerIngredientsSlice);
+export default function IngredientCard({ ingredient }: {ingredient: IngredientType}) {
+  const dispatch = useAppDispatch();
+  const { ingredients, bun } = useAppSelector(state => state.burgerIngredientsSlice);
   const navigate = useNavigate()
-  const ingredientCount = ingredients.filter(
+  const ingredientCount = (ingredients.filter(
     (burgerIngredient) => burgerIngredient?._id === ingredient?._id,
-  ).length;
+  ).length || 0) + (bun?._id === ingredient._id ? 2 : 0);
   const [, drag] = useDrag({
     type: 'new',
     item: ingredient,

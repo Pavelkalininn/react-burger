@@ -4,30 +4,32 @@ import {
   EmailInput,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchLogin, setValue } from '../../services/slices/authorization';
+import {
+  fetchLogin,
+  setValue,
+  TAuthorizationInitialState,
+} from '../../services/slices/authorization';
+import { ChangeEvent, FormEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 export function LoginPageCard() {
-  const dispatch = useDispatch();
-  const { email, password, isSuccess, isError, error, isAuthorized } = useSelector(
-    (state) => state.authorization,
+  const dispatch = useAppDispatch();
+  const { email, password, isSuccess } = useAppSelector(
+    state => state.authorization,
   );
   const navigate = useNavigate();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: '/' } };
 
-  function handleChange(e) {
-    dispatch(setValue({ key: e.target.name, value: e.target.value }));
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const key = e.target.name as keyof TAuthorizationInitialState;
+    dispatch(setValue({ key: key, value: e.target.value }));
   }
 
-  function onSubmit(event) {
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     dispatch(fetchLogin({ password, email })).then(() => isSuccess && navigate(from))
-  }
-
-  if (isAuthorized) {
-    return <Navigate to="/" replace />;
   }
 
   return (
@@ -44,7 +46,6 @@ export function LoginPageCard() {
         value={password}
         name={'password'}
         extraClass={cn('mb-2', loginStyles.inputField)}
-        error={isError}
       />
       <Button
         type="primary"

@@ -1,5 +1,9 @@
 
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import { api_url } from '../const';
 import { checkResponse } from './utils';
 import Cookies from 'universal-cookie';
@@ -7,7 +11,7 @@ import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
-export const fetchRegister = createAsyncThunk('register', async ({ email, password, name }) => {
+export const fetchRegister = createAsyncThunk('register', async ({ email, password, name }: {password: string, email: string, name: string}) => {
   return await fetch(`${api_url}/api/auth/register`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -16,7 +20,7 @@ export const fetchRegister = createAsyncThunk('register', async ({ email, passwo
 });
 
 
-export const fetchLogin = createAsyncThunk('login', async ({ email, password }) => {
+export const fetchLogin = createAsyncThunk('login', async ({ email, password }: {password: string, email: string}) => {
   return await fetch(`${api_url}/api/auth/login`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -56,7 +60,7 @@ export const fetchUser = createAsyncThunk('fetchUser', async () => {
   }).then((res) => checkResponse(res));
 });
 
-export const updateUser = createAsyncThunk('updateUser', async ({ email, name, password }) => {
+export const updateUser = createAsyncThunk('updateUser', async ({ email, name, password }: {password: string, email: string, name: string}) => {
   const token = cookies.get('accessToken');
   return await fetch(`${api_url}/api/auth/user`, {
     method: 'PATCH',
@@ -70,7 +74,7 @@ export const updateUser = createAsyncThunk('updateUser', async ({ email, name, p
 
 
 
-export const fetchPasswordResetSubmit = createAsyncThunk('password/resetSubmit', async ({password, token}) => {
+export const fetchPasswordResetSubmit = createAsyncThunk('password/resetSubmit', async ({password, token}: {password: string, token: string}) => {
   return await fetch(`${api_url}/api/password-reset/reset`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -78,7 +82,7 @@ export const fetchPasswordResetSubmit = createAsyncThunk('password/resetSubmit',
   }).then((res) => checkResponse(res));
 });
 
-export const fetchPasswordReset = createAsyncThunk('password/reset', async ({email}) => {
+export const fetchPasswordReset = createAsyncThunk('password/reset', async ({email}: {email: string}) => {
   return await fetch(`${api_url}/api/password-reset`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -87,11 +91,23 @@ export const fetchPasswordReset = createAsyncThunk('password/reset', async ({ema
 });
 
 
+export type TAuthorizationInitialState = {
+  email: string,
+  password: string,
+  name: string,
+  user: string,
+  token: string,
+  isAuthChecked: boolean,
+  isLoading: boolean,
+  isSuccess: boolean,
+  isFetched: boolean,
+  isError: boolean,
+  error: string | undefined
+}
 
 
 
-
-const initialState = {
+export const authorizationInitialState: TAuthorizationInitialState = {
   email: '',
   password: '',
   name: '',
@@ -105,16 +121,21 @@ const initialState = {
   error: ''
 }
 
+type IChangeAction<K extends keyof TAuthorizationInitialState> = {
+  key: K;
+  value: TAuthorizationInitialState[K];
+};
+
 
 const authorizationSlice = createSlice({
   name: 'authorization',
-  initialState,
+  initialState: authorizationInitialState,
   reducers: {
-    setValue: (state, action) => {
+    setValue: <K extends keyof TAuthorizationInitialState>(state: TAuthorizationInitialState, action: PayloadAction<IChangeAction<K>>) => {
       state[action.payload.key] = action.payload.value;
     },
-    removeState: (state, action) => {
-      return {...initialState, isAuthChecked: true};
+    removeState: () => {
+      return {...authorizationInitialState, isAuthChecked: true};
     },
     setIsAuthChecked: (state, action) => {
       state.isAuthChecked = action.payload;
@@ -182,7 +203,7 @@ const authorizationSlice = createSlice({
         if (action.payload.success) {
           cookies.remove('refreshToken');
           cookies.remove('accessToken');
-          return {...initialState, isAuthChecked: true}
+          return {...authorizationInitialState, isAuthChecked: true}
         }
         state.isLoading = false;
         state.isFetched = true;
