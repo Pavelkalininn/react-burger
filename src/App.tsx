@@ -26,6 +26,8 @@ import {
 import Cookies from 'universal-cookie';
 import { CurrentIngredientCard } from './components/currentIngredientCard';
 import { useAppDispatch } from './hooks';
+import { OrderFeedPage } from './pages/orderFeed';
+import { FeedDetailCard } from './components/feedDetailCard';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -50,8 +52,8 @@ function App() {
   const NotFoundPage = pageWrapper(NotFound404Card);
   const ForgotPasswordPage = pageWrapper(ForgotPasswordCard);
   const ResetPasswordPage = pageWrapper(ResetPasswordCard);
-  const ProfilePage = pageWrapper(ProfilePageCard);
   const IngredientPage = pageWrapper(CurrentIngredientCard);
+  const CurrentOrderPage = pageWrapper(FeedDetailCard)
 
   return (
     <>
@@ -86,7 +88,26 @@ function App() {
             path="/reset-password"
             element={<OnlyUnAuth element={<ResetPasswordPage title="Восстановление пароля" />} />}
           />
-          <Route path="/profile" element={<OnlyAuth element={<ProfilePage title="" />} />} />
+          <Route
+            path="/feed"
+            element={<OrderFeedPage />}
+          />
+
+          <Route
+            path="/feed/:number"
+            element={<CurrentOrderPage />}
+          />
+
+          <Route
+            path="/profile/orders"
+            element={<OnlyAuth element={<ProfilePageCard  />} />}
+          />
+
+          <Route
+            path="/profile/orders/:number"
+            element={<OnlyAuth element={<CurrentOrderPage />} />}
+          />
+          <Route path="/profile" element={<OnlyAuth element={<ProfilePageCard />} />} />
           <Route path="/ingredients/:id" element={''} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

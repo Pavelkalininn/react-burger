@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import profileStyles from './style.module.css';
 import cn from 'classnames';
@@ -10,19 +10,21 @@ import {
 } from '../../services/slices/authorization';
 import { ChangeEvent, FormEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { OrderFeed } from '../../components/orderFeed';
 
 export function ProfilePageCard() {
   const dispatch = useAppDispatch();
-  const { email, password, name } = useAppSelector(state => state.authorization);
+  const location = useLocation();
+  console.log(location);
+  const { email, password, name } = useAppSelector((state) => state.authorization);
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const key = e.target.name as keyof TAuthorizationInitialState;
     dispatch(setValue({ key: key, value: e.target.value }));
   }
-  function onSubmit(event:FormEvent<HTMLFormElement>) {
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    dispatch(updateUser({ email, name, password }))
+    dispatch(updateUser({ email, name, password }));
   }
-
 
   return (
     <>
@@ -42,8 +44,7 @@ export function ProfilePageCard() {
           </NavLink>
           <NavLink
             to={'/'}
-            onClick={() => dispatch(fetchLogout())
-          }
+            onClick={() => dispatch(fetchLogout())}
             className={({ isActive }) => (isActive ? profileStyles.activeHref : profileStyles.href)}
           >
             <p>Выход</p>
@@ -52,43 +53,49 @@ export function ProfilePageCard() {
             В этом разделе вы можете изменить свои персональные данные
           </p>
         </div>
-        <form onSubmit={onSubmit}>
-          <Input
-            type={'text'}
-            placeholder={'Имя'}
-            onChange={handleChange}
-            icon={'EditIcon'}
-            value={name}
-            name={'name'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass={cn('ml-1', profileStyles.inputField)}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-          />
-          <Input
-            type={'text'}
-            placeholder={'Логин'}
-            onChange={handleChange}
-            icon={'EditIcon'}
-            value={email}
-            name={'name'}
-            error={false}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass={cn('ml-1', profileStyles.inputField)}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-          />
-          <PasswordInput
-            onChange={handleChange}
-            icon={'EditIcon'}
-            value={password}
-            name={'password'}
-            extraClass={cn('mb-2', profileStyles.inputField)}
-          />
-        </form>
+        {location.pathname === '/profile' ? (
+          <form onSubmit={onSubmit}>
+            <Input
+              type={'text'}
+              placeholder={'Имя'}
+              onChange={handleChange}
+              icon={'EditIcon'}
+              value={name}
+              name={'name'}
+              error={false}
+              errorText={'Ошибка'}
+              size={'default'}
+              extraClass={cn('ml-1', profileStyles.inputField)}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            />
+            <Input
+              type={'text'}
+              placeholder={'Логин'}
+              onChange={handleChange}
+              icon={'EditIcon'}
+              value={email}
+              name={'name'}
+              error={false}
+              errorText={'Ошибка'}
+              size={'default'}
+              extraClass={cn('ml-1', profileStyles.inputField)}
+              onPointerEnterCapture={undefined}
+              onPointerLeaveCapture={undefined}
+            />
+            <PasswordInput
+              onChange={handleChange}
+              icon={'EditIcon'}
+              value={password}
+              name={'password'}
+              extraClass={cn('mb-2', profileStyles.inputField)}
+            />
+          </form>
+        ) : (
+          <div className={profileStyles.orderFeedContainer}>
+            <OrderFeed onlyMy={true} />
+          </div>
+        )}
       </div>
     </>
   );
