@@ -15,7 +15,6 @@ import { OrderFeed } from '../../components/orderFeed';
 export function ProfilePageCard() {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  console.log(location);
   const { email, password, name } = useAppSelector((state) => state.authorization);
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const key = e.target.name as keyof TAuthorizationInitialState;
@@ -32,13 +31,13 @@ export function ProfilePageCard() {
         <div className={cn('text text_type_main-medium', profileStyles.menu)}>
           <NavLink
             to={'/profile'}
-            className={({ isActive }) => (isActive ? profileStyles.activeHref : profileStyles.href)}
+            className={location.pathname === '/profile' ? profileStyles.activeHref : profileStyles.href}
           >
             <p>Профиль</p>
           </NavLink>
           <NavLink
             to={'/profile/orders'}
-            className={({ isActive }) => (isActive ? profileStyles.activeHref : profileStyles.href)}
+            className={location.pathname === '/profile/orders' ? profileStyles.activeHref : profileStyles.href}
           >
             <p>История заказов</p>
           </NavLink>

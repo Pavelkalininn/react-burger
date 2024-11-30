@@ -9,9 +9,14 @@
   flex-direction: column;
   justify-content: center;
   max-width: 30vw;
-  max-height: 80vh;
+  max-height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.multiColumn {
+  columns: 30px 5;
+  column-gap: 5px;
 }
 
 .rightSide {

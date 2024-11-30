@@ -6,6 +6,7 @@
   background: #1C1C21;
   margin: 24px 24px 0 0;
   max-width: 50vw;
+  z-index: 1;
 
 }
 
@@ -29,14 +30,7 @@
 
 .image {
   position: absolute;
-  border-radius:  100%;
-  border-width: 2px;
-  border-color: #FFFFFF;
-  background-color: black;
   top: -50px;
-
-
-
 }
 .imageList {
   position: relative;

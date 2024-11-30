@@ -58,6 +58,12 @@ const ordersSlice = createSlice({
       state.total = data.total;
       state.totalToday = data.totalToday;
     }),
+    setCurrentOrder: (state, action) => {
+      state.currentOrder = action.payload;
+    },
+    dropCurrentOrder: (state) => {
+      state.currentOrder = null
+    },
     closeConnection: (state => initialState),
     sendOrder: ((state, action) => {
       state.isConnected = true;
@@ -78,6 +84,8 @@ export const {
   connectionError,
   getMessage,
   closeConnection,
+  setCurrentOrder,
+  dropCurrentOrder,
   sendOrder } = ordersSlice.actions;
 export const orderActions = ordersSlice.actions;
 export default ordersSlice.reducer;

@@ -14,7 +14,8 @@ export function FeedDetailCard(){
   const { currentOrder } = useAppSelector(state => state.orders);
   const { ingredients } = useAppSelector(state => state.ingredientsSlice)
   const orderId = useParams().number;
-  const orderPrice = currentOrder!.ingredients.reduce(
+  let orderPrice: any;
+  orderPrice = currentOrder?.ingredients?.reduce(
     (accumulator, currentValue) =>
       accumulator + ingredients.find((ingred) => ingred._id === currentValue)!.price,
     0,

@@ -88,14 +88,10 @@ function App() {
             path="/reset-password"
             element={<OnlyUnAuth element={<ResetPasswordPage title="Восстановление пароля" />} />}
           />
+
           <Route
             path="/feed"
             element={<OrderFeedPage />}
-          />
-
-          <Route
-            path="/feed/:number"
-            element={<CurrentOrderPage />}
           />
 
           <Route
@@ -103,12 +99,17 @@ function App() {
             element={<OnlyAuth element={<ProfilePageCard  />} />}
           />
 
+          <Route path="/profile" element={<OnlyAuth element={<ProfilePageCard />} />} />
+          <Route path="/ingredients/:id" element={''} />
+          <Route
+            path="/feed/:number"
+            element={<CurrentOrderPage />}
+          />
           <Route
             path="/profile/orders/:number"
             element={<OnlyAuth element={<CurrentOrderPage />} />}
           />
-          <Route path="/profile" element={<OnlyAuth element={<ProfilePageCard />} />} />
-          <Route path="/ingredients/:id" element={''} />
+
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
