@@ -17,14 +17,19 @@ const cookies = new Cookies();
 export const socketMiddleware = (): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
+    let isConnected = false;
 
     return next => (action: PayloadAction) => {
       const { dispatch } = store;
       const { type } = action;
       const payload = action.payload
 
+
       if (type === "orders/startConnection") {
-        socket = new WebSocket(`${payload}?token=${cookies.get('accessToken')?.split(' ')[1]}`);
+        if (socket === null && !isConnected) {
+          socket = new WebSocket(`${payload}?token=${cookies.get('accessToken')?.split(' ')[1]}`);
+          isConnected = true;
+        }
       }
       if (socket) {
         socket.onopen = event => {
@@ -38,12 +43,17 @@ export const socketMiddleware = (): Middleware => {
           dispatch(getMessage(data));
         };
         socket.onclose = event => {
-          dispatch(closeConnection());
+          if (isConnected && socket?.onopen) socket?.onopen(event)
+          else dispatch(closeConnection());
         };
-
         if (type === 'orders/sendOrder') {
           const message = payload;
-          socket.send(JSON.stringify(message));
+          socket?.send(JSON.stringify(message));
+        }
+        if (type === 'orders/closeConnection') {
+          socket.close();
+          isConnected = false;
+          socket = null;
         }
       }
       next(action);

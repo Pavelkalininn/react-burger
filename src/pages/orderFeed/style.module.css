@@ -15,8 +15,12 @@
 }
 
 .multiColumn {
-  columns: 30px 5;
+  columns: 30px 3;
   column-gap: 5px;
+}
+
+.textBlue {
+  color: #00CCCC;
 }
 
 .rightSide {

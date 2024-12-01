@@ -46,6 +46,7 @@ export function OrderFeed({ onlyMy = false }: { onlyMy?: boolean } ){
         );
         return (
           <div
+            key={order.number}
             onClick={() => {
               dispatch(setCurrentOrder(order));
               window.history.replaceState(null, "Order description", `${currentUrl}/${order.number}`)

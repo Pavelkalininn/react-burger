@@ -30,6 +30,7 @@ import { OrderFeedPage } from './pages/orderFeed';
 import { FeedDetailCard } from './components/feedDetailCard';
 
 function App() {
+  document.title = 'Stellar burgers'
   const dispatch = useAppDispatch();
   let location = useLocation()
 

@@ -5,11 +5,18 @@ import {
 } from '@reduxjs/toolkit';
 import { api_url } from '../const';
 import { checkResponse } from './utils';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 export const fetchOrder = createAsyncThunk<{order: {number: number}, success: boolean}, string[]>('order/fetchOrder', async (ingredients) => {
+  const token = cookies.get('accessToken');
   return await fetch(`${api_url}/api/orders`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: {
+      'content-type': 'application/json',
+      'authorization': token
+    },
     body: JSON.stringify({ ingredients }),
   }).then((res) => checkResponse(res));
 });

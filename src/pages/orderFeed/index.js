@@ -7,10 +7,10 @@ import { useAppSelector } from '../../hooks';
 export function OrderFeedPage() {
   const {orderFeed, total, totalToday} = useAppSelector(state => state.orders);
   function getOrderNumbers(status) {
-    return orderFeed?.filter(order => order.status === status).map((order) => (
+    return orderFeed?.filter(order => order.status === status).slice(0, 30).map((order) => (
         <p
           key={order.number}
-          className={cn('text text_type_main-default', styles.orderNumbers)}
+          className={cn("text text_type_digits-default", styles.orderNumbers)}
         >
           {order.number}
         </p>
@@ -33,7 +33,7 @@ export function OrderFeedPage() {
               <p
                 className={cn('text text_type_main-medium', styles.statusHeader)}
               >ГОТОВЫ:</p>
-              <div className={styles.multiColumn} >
+              <div className={cn(styles.multiColumn, styles.textBlue, )} >
                 {getOrderNumbers('done')}
               </div>
             </div>

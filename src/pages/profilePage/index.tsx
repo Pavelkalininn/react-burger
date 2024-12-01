@@ -8,7 +8,7 @@ import {
   TAuthorizationInitialState,
   updateUser,
 } from '../../services/slices/authorization';
-import { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { OrderFeed } from '../../components/orderFeed';
 
@@ -24,6 +24,22 @@ export function ProfilePageCard() {
     event.preventDefault();
     dispatch(updateUser({ email, name, password }));
   }
+  const keyDownHandler = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        dispatch(updateUser({ email, name, password }));
+      }
+    },
+    [dispatch, email, name, password],
+  );
+
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyDownHandler, false);
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler, false);
+    };
+  }, [keyDownHandler]);
 
   return (
     <>
@@ -74,7 +90,7 @@ export function ProfilePageCard() {
               onChange={handleChange}
               icon={'EditIcon'}
               value={email}
-              name={'name'}
+              name={'email'}
               error={false}
               errorText={'Ошибка'}
               size={'default'}
