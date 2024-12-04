@@ -4,6 +4,7 @@ import burgerIngredientsSliceReducer from './burgerIngredients';
 import currentIngredientSliceReducer from './currentIngredient';
 import orderNumberSliceReducer from './order';
 import authorizationReducer from './authorization';
+import ordersSliceReducer from './orders';
 
 export const rootReducer = combineSlices({
   ingredientsSlice: ingredientsSliceReducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineSlices({
   currentIngredientSlice: currentIngredientSliceReducer,
   orderNumberSlice: orderNumberSliceReducer,
   authorization: authorizationReducer,
+  orders: ordersSliceReducer
 });

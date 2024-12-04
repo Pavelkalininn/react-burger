@@ -8,7 +8,8 @@
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 2fr;
+  margin-top: 40px;
 }
 
 .menu {
@@ -29,4 +30,15 @@
 .activeHref {
   composes: href;
   color: #61dafb;
+}
+
+
+.orderFeedContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 40vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

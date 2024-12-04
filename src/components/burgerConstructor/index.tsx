@@ -83,6 +83,7 @@ export default function BurgerConstructor() {
         {isError && error}
         <Button
           htmlType="button"
+          disabled={ingredients?.length === 0 || !bun?._id}
           onClick={() => {
             user
               ? dispatch(

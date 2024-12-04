@@ -15,16 +15,6 @@ export type IngredientType = {
   uuid?:string
 }
 
-export type TIngredientWithUUID = IngredientType & {
-  uuid: string
-}
-
-export type BurgerIngredientsSliceType = {
-  burgerIngredientsSlice: {
-    ingredients: ReadonlyArray<IngredientType>,
-    bun: IngredientType
-  }
-}
 export type ingredientsSliceType = {
   ingredientsSlice: {
     ingredients: Array<IngredientType>,
@@ -38,33 +28,6 @@ export type ingredientsSliceType = {
 
 export type currentIngredientSliceType = {
   currentIngredientSlice: IngredientType | null
-}
-
-export type OrderNumberSliceType = {
-  orderNumberSlice: {
-    number: number | null,
-    isLoading: boolean,
-    isFetched: boolean,
-    isSuccess: boolean,
-    isError: boolean,
-    error: string,
-  }
-}
-
-export type AuthorizationType = {
-  authorization: {
-    email: string,
-    password: string,
-    name: string,
-    user: string,
-    token: string,
-    isAuthChecked: boolean,
-    isLoading: boolean,
-    isSuccess: boolean,
-    isFetched: boolean,
-    isError: boolean,
-    error: string
-  }
 }
 
 export type BurgerConstructorIngredientType = {

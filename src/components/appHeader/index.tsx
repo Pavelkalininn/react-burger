@@ -24,7 +24,7 @@ export default function AppHeader() {
           </li>
           <li className={headerStyle.li}>
             <NavLink
-              to={'/profile/orders'}
+              to={'/feed'}
               className={({ isActive }) => (isActive ? headerStyle.activeHref : headerStyle.href)}
             >
               <ListIcon className={headerStyle.icon} type="primary" />
