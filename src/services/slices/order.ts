@@ -7,7 +7,7 @@ import { api_url } from '../const';
 import { checkResponse } from './utils';
 import Cookies from 'universal-cookie';
 
-const cookies = new Cookies();
+export const cookies = new Cookies();
 
 export const fetchOrder = createAsyncThunk<{order: {number: number}, success: boolean}, string[]>('order/fetchOrder', async (ingredients) => {
   const token = cookies.get('accessToken');
@@ -29,7 +29,7 @@ type TInitialState = {
   isError: boolean,
   error?: string,
 }
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   number: null,
   isLoading: false,
   isFetched: false,

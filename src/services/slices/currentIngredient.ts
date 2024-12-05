@@ -2,9 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'universal-cookie';
 import { IngredientType } from '../../types/burger';
 
-const cookies = new Cookies();
+export const cookies = new Cookies();
 
-const initialState: IngredientType | null = cookies.get('currentIngredient') || null;
+export const initialState: IngredientType | null = cookies.get('currentIngredient') || null;
 
 const currentIngredientSlice = createSlice({
   name: 'currentIngredient',
