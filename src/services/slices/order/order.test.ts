@@ -2,7 +2,7 @@ import orderNumberSliceReducer, {
   fetchOrder,
   initialState,
   removeOrder
-} from './order';
+} from '../order';
 
 describe('orderNumberSlice', () => {
   it('should return the initial state', () => {

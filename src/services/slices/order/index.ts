@@ -3,8 +3,8 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { api_url } from '../const';
-import { checkResponse } from './utils';
+import { api_url } from '../../const';
+import { checkResponse } from '../utils';
 import Cookies from 'universal-cookie';
 
 export const cookies = new Cookies();

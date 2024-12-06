@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'universal-cookie';
-import { IngredientType } from '../../types/burger';
+import { IngredientType } from '../../../types/burger';
 
 export const cookies = new Cookies();
 

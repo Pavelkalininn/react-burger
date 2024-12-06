@@ -1,7 +1,7 @@
 import ingredientsSliceReducer, {
   initialState,
   fetchIngredients,
-} from './ingredients';
+} from '../ingredients';
 
 
 const ingredient = {
@@ -80,7 +80,6 @@ describe('ingredientsSlice', () => {
         isError: true,
         error: "error"
       };
-
       expect(ingredientsSliceReducer(previousState, action)).toEqual(expectedState);
     });
   });

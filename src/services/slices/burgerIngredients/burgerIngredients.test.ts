@@ -5,7 +5,7 @@ import burgerIngredients, {
   addBunToBurger,
   moveIngredient,
   InitialState
-} from './burgerIngredients';
+} from '../burgerIngredients';
 
 const ingredient = {
   _id: 'set',

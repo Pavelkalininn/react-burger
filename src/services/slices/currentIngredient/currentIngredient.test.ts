@@ -1,6 +1,6 @@
 import currentIngredientsReducer, {
   chooseIngredient, dropIngredient, initialState
-} from './currentIngredient';
+} from '../currentIngredient';
 
 const ingredient = {
   _id: 'set',

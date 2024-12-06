@@ -11,7 +11,7 @@ import authorizationsReducer, {
   updateUser,
   fetchPasswordReset,
   fetchPasswordResetSubmit,
-} from './authorization';
+} from '../authorization';
 
 
 
