@@ -1,6 +1,7 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This application deployed on github pages and you can see it by url:
+https://pavelkalininn.github.io/react-burger/
 
 ## Available Scripts
 
