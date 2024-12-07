@@ -1,1 +1,0 @@
-export const api_url: string = process.env.API_URL || 'https://norma.nomoreparties.space'
