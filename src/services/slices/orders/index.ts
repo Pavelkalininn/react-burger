@@ -2,9 +2,9 @@ import {
   createAsyncThunk,
   createSlice,
 } from '@reduxjs/toolkit';
-import { TOrderCard } from '../../types/order';
-import { api_url } from '../const';
-import { checkResponse } from './utils';
+import { TOrderCard } from '../../../types/order';
+import { api_url } from '../../const';
+import { checkResponse } from '../utils';
 
 
 export const fetchCurrentOrder = createAsyncThunk('orders/fetchCurrentOrder', async ({ orderNumber }: {orderNumber: string}) => {
@@ -23,7 +23,7 @@ type TInitialState = {
   isConnected: boolean,
   error: string,
 }
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   orderFeed: [],
   total: 0,
   totalToday: 0,

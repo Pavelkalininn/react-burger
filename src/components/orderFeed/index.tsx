@@ -39,11 +39,10 @@ export function OrderFeed({ onlyMy = false }: { onlyMy?: boolean } ){
   return (
     <>
       {orderFeed && orderFeed.map((order) => {
-        const orderPrice = order.ingredients.reduce(
-          (accumulator, currentValue) =>
-            accumulator + ingredients.find((ingred) => ingred._id === currentValue)!.price,
-          0,
-        );
+        const orderPrice = order.ingredients.reduce((accumulator, currentValue) => {
+          const foundedIngredient = ingredients.find((ingred) => ingred._id === currentValue)
+          return foundedIngredient ? accumulator + foundedIngredient.price : accumulator;
+        }, 0);
         return (
           <div
             key={order.number}
@@ -61,13 +60,15 @@ export function OrderFeed({ onlyMy = false }: { onlyMy?: boolean } ){
             <div className={styles.spaceBetween}>
               <div className={styles.imageList}>
                 {order.ingredients.map((ingredient: string, index: number) => {
+
+                  const foundedIngredient = ingredients.find((ingred) => ingred._id === ingredient)
                   if (index < maxImageLength)
                     return (
                       <img key={index}
                         className={styles.image}
                         style={{ left: index * 40 + 'px', zIndex: -index }}
-                        src={ingredients.find((ingred) => ingred._id === ingredient)!.image_mobile}
-                        alt={ingredients.find((ingred) => ingred._id === ingredient)!.name}
+                        src={foundedIngredient?.image_mobile}
+                        alt={foundedIngredient?.name}
                       />
                     );
                   return null

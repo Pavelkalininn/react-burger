@@ -4,12 +4,12 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { api_url } from '../const';
-import { checkResponse } from './utils';
+import { api_url } from '../../const';
+import { checkResponse } from '../utils';
 import Cookies from 'universal-cookie';
 
 
-const cookies = new Cookies();
+export const cookies = new Cookies();
 
 export const fetchRegister = createAsyncThunk('register', async ({ email, password, name }: {password: string, email: string, name: string}) => {
   return await fetch(`${api_url}/api/auth/register`, {
@@ -203,10 +203,10 @@ const authorizationSlice = createSlice({
         if (action.payload.success) {
           cookies.remove('refreshToken');
           cookies.remove('accessToken');
-          return {...authorizationInitialState, isAuthChecked: true}
         }
         state.isLoading = false;
         state.isFetched = true;
+        state.isAuthChecked = true;
         state.isSuccess = action.payload.success;
       })
       .addCase(fetchLogout.rejected, (state, action) => {
