@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { api_url } from '../const';
-import { checkResponse } from './utils';
-import { IngredientType } from '../../types/burger';
+import { api_url } from '../../const';
+import { checkResponse } from '../utils';
+import { IngredientType } from '../../../types/burger';
 
 export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async () => {
   return await fetch(`${api_url}/api/ingredients`, {
@@ -18,7 +18,7 @@ type TInitialState = {
   error: string,
 }
 
-const initialState: TInitialState = {
+export const initialState: TInitialState = {
   ingredients: [],
   isLoading: false,
   isFetched: false,
